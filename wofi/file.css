@@ -1,0 +1,100 @@
+@define-color background #1a1b26;
+@define-color foreground #c0caf5;
+@define-color mauve      #bb9af7;
+@define-color red        #f7768e;
+@define-color lavender   #7dcfff;
+@define-color text       #c0caf5;
+@define-color blue       #7aa2f7;
+
+@keyframes fadeIn {
+    0% {}
+    100% {}
+}
+
+* {
+    all: unset;
+    font-family: 'JetBrainsMonoNLNerdFontMono-Regular', monospace;
+    outline: none;
+    border: none;
+    text-shadow: none;
+    font-size: 14px;
+    color: @text;
+}
+
+window {
+    padding: 10px;
+    background-color: rgba(26, 27, 38, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+}
+
+#outer-box,
+#inner-box,
+#scroll,
+#input,
+#entry,
+#entry arrow {
+    border: none;
+}
+
+#inner-box {
+    margin: 2px;
+    padding: 5px;
+}
+
+#scroll {
+    margin: 0;
+    padding: 30px;
+}
+
+#input {
+    margin: 20px;
+    padding: 15px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    background-color: rgba(26, 27, 38, 0.2);
+}
+
+#input image {
+    padding-right: 10px;
+    color: @mauve;
+}
+
+#entry {
+    margin: 5px;
+    padding: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 20%;
+}
+
+#text {
+    margin: 5px;
+    color: @text;
+    outline: none;
+    max-width: 20%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#entry arrow {
+    padding: 10px;
+    color: @lavender;
+}
+
+#entry:selected {
+    box-shadow: 0 0 5px rgba(187, 154, 247, 0.4);
+    border-radius: 10px;
+    background-color: rgba(122, 162, 247, 0.1);
+}
+
+#entry:selected #text {
+    color: @blue;
+}
+
+#entry:drop(active) {
+    background-color: @lavender !important;
+}

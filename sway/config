@@ -37,6 +37,7 @@ assign [class="Spotify"] $ws5
 
 # Configuración de Ventana
 for_window [app_id="org.mozilla.firefox"] fullscreen enable, focus
+for_window [app_id="wofi"] border none
 
 # mover Ventanas en el Workspace
 bindsym $mod+Shift+h move left
@@ -103,8 +104,10 @@ bindsym $mod+n move workspace to output eDP-1
 
 # Hotkeys básicos
 bindsym $mod+Return exec wezterm
-bindsym $mod+d exec rofi -show drun -theme ~/.config/rofi/config.rasi
-bindsym $mod+o exec ~/Escritorio/3.Recursos/Scripts/rofi/open_file.sh
+#bindsym $mod+d exec rofi -show drun -theme ~/.config/rofi/config.rasi
+bindsym $mod+d exec wofi -n
+#bindsym $mod+o exec ~/Escritorio/3.Recursos/Scripts/rofi/open_file.sh
+bindsym $mod+o exec ~/Escritorio/3.Recursos/Scripts/rofi/open_file_wofi.sh
 bindsym $mod+Shift+b exec ~/Escritorio/3.Recursos/Scripts/rofi/select_wallpaper.sh
 bindsym $mod+q kill
 bindsym $mod+Shift+r reload
