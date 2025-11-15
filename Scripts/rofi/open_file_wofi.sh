@@ -42,7 +42,7 @@ done
 
 # Abrir según tipo
 case "$SELECTED_FILE" in
-  *.pdf) okular "$SELECTED_FILE" ;;
+  *.pdf) zathura "$SELECTED_FILE" ;;
   *.xls|*.xlsx|*.ods|*.csv|*.docx) "$LIBREOFFICE" "$SELECTED_FILE" ;;
   *.epub) "$KOREADER" "$SELECTED_FILE" ;;
   *) xdg-open "$SELECTED_FILE" ;;
