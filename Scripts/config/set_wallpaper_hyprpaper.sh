@@ -15,6 +15,7 @@ touch "$CONFIG_FILE"
 # Reemplazar  contenido del archivo
 echo "preload = $WALLPAPER" > "$CONFIG_FILE"
 echo "wallpaper = , $WALLPAPER" >> "$CONFIG_FILE"
+echo "splash = false" >> "$CONFIG_FILE"
 
 # Recargar sway
 hyprctl hyprpaper reload ,$WALLPAPER
