@@ -7,7 +7,7 @@ set -euo pipefail
 if [[ ${1:-} == "--help" ]]; then
     echo "Uso: ./postinstall.sh [opciones]"
     echo "Opciones disponibles:"
-    echo "  hyprland  flatpaks  gtk-apps  nvim  wezterm  wofi  zathura  syncthing  nextdns  font  starship bleachbit"
+    echo "  hyprland  flatpaks  gtk-apps  nvim  wezterm  wofi  zathura  syncthing  nextdns  font  starship  bleachbit  bash  keyboard-layout"
     exit 0
 fi
 
@@ -70,7 +70,7 @@ sudo dnf -y makecache
 if [[ $# -ge 1 ]]; then
 	for arg in "$@"; do
 		case $arg in
-			hyprland|flatpaks|gtk-apps|nvim|wezterm|wofi|zathura|syncthing|nextdns|font|starship|bleachbit)
+			hyprland|flatpaks|gtk-apps|nvim|wezterm|wofi|zathura|syncthing|nextdns|font|starship|bleachbit|bash|keyboard-layout)
 				bash "$POSTINSTALL_DIR/setup/$arg.sh"
 				;;
 			*)
