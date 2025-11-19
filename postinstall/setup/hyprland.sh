@@ -1,7 +1,7 @@
 !#/bin/bash
 
 echo "Instalando Hyprland y hyprpaper"
-sudo dnf install -C -y hyprland hyprpaper pulseaudio pavucontrol nm-applet blueman-applet mako waybar wofi polkit-gnome xdg-desktop-portal xdg-desktop-portal-hyprland brightnessctl grim wl-clipboard
+sudo dnf install -C -y hyprland hyprpaper pulseaudio pavucontrol blueman-applet mako waybar wofi polkit-gnome xdg-desktop-portal xdg-desktop-portal-hyprland brightnessctl grim wl-clipboard network-manager-applet unzip unrar
 
 cp -r "$DOTFILES_DIR/hypr" "$CONFIG_DIR/hypr" 
 cp -r "$DOTFILES_DIR/mako" "$CONFIG_DIR/mako" 
