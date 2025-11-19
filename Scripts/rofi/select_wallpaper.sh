@@ -1,7 +1,7 @@
 #!/bin/bash
 
 WALLPAPER_DIR="$HOME/Escritorio/3.Recursos/Imagenes/"
-SETTER="$HOME/Escritorio/3.Recursos/Scripts/config/set_wallpaper.sh"
+SETTER="$HOME/Escritorio/3.Recursos/dotfiles/Scripts/config/set_wallpaper.sh"
 
 menu() {
     find "${WALLPAPER_DIR}" -type f -maxdepth 1 \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" \) | awk '{print "img:"$0}'

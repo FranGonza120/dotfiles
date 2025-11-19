@@ -1,0 +1,32 @@
+# Aplicaciones a considerar
+- syncthing y autostart
+- nextdns como dns
+- flatpak
+- zen
+- JetBrainsmono nerdfont y setup
+- setup partición personal en Escritorio
+- git y credenciales ssh
+- hyprland
+- wezterm from source
+- hyprpaper
+- pulseaudio
+- pavucontrol
+- mako
+- nm-applet
+- waybar
+- wofi
+- gapless (music player)
+- thunar
+- nvim 
+- obsidian flatpak
+- zoom
+- discord
+- obs
+- gddm
+- discord
+- lxappearance
+- bleachbit
+- zathura y pdf-poppler
+- Tokyo Night gtk theme y setup
+- capitaine-cursors y setup 
+- TokyoNight icons pack y setup

@@ -106,9 +106,9 @@ bindsym $mod+n move workspace to output eDP-1
 bindsym $mod+Return exec wezterm
 #bindsym $mod+d exec rofi -show drun -theme ~/.config/rofi/config.rasi
 bindsym $mod+d exec wofi -n
-#bindsym $mod+o exec ~/Escritorio/3.Recursos/Scripts/rofi/open_file.sh
-bindsym $mod+o exec ~/Escritorio/3.Recursos/Scripts/rofi/open_file_wofi.sh
-bindsym $mod+Shift+b exec ~/Escritorio/3.Recursos/Scripts/rofi/select_wallpaper.sh
+#bindsym $mod+o exec ~/Escritorio/3.Recursos/dotfiles/Scripts/rofi/open_file.sh
+bindsym $mod+o exec ~/Escritorio/3.Recursos/dotfiles/Scripts/rofi/open_file_wofi.sh
+bindsym $mod+Shift+b exec ~/Escritorio/3.Recursos/dotfiles/Scripts/rofi/select_wallpaper.sh
 bindsym $mod+q kill
 bindsym $mod+Shift+r reload
 bindsym $mod+Shift+e exit

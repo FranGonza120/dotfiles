@@ -1,0 +1,16 @@
+max-visible=5
+layer=overlay
+margin=10
+padding=12
+border-size=1
+border-radius=15
+background-color=#222436
+text-color=#c0caf5
+border-color=#7aa2f7
+font=JetBrains Mono 12
+default-timeout=2000
+ignore-timeout=false
+anchor=top-right
+icons=0
+max-icon-size=64
+
