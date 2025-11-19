@@ -28,8 +28,8 @@
     - TokyoNight icons pack y setup
 - [x] bleachbit
 - [x] zathura y pdf-poppler
-- [ ] bash
-- [ ] keyboard-layout
+- [x] bash
+- [x] keyboard-layout
 
 # Actualizar
 - [x] carpeta waybar en dotfiles
