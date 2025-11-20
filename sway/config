@@ -17,12 +17,22 @@ default_border pixel 2
 gaps inner 3
 gaps outer 3
 
+#Colores de las ventanas
+client.focused          #7AA2F7 #1A1B26 #7AA2F7 #7AA2F7 #7AA2F7
+# Ventana no enfocada
+client.unfocused        #292E42 #1A1B26 #565F89 #292E42 #292E42
+# Ventana urgente (alertas, diálogos críticos)
+client.urgent           #F7768E #1A1B26 #F7768E #F7768E #F7768E
+# Ventana marcada
+client.focused_inactive #3B4261 #1A1B26 #565F89 #3B4261 #3B4261
+
+
 # Workspaces (6 disponibles)
 set $ws1 "1  "
 set $ws2 "2 󰷉"
 set $ws3 "3 "
 set $ws4 "4 󰂺"
-set $ws5 "5 "
+set $ws5 "5 󰎆"
 set $ws6 "6 "
 set $ws7 "7 "
 
@@ -31,9 +41,11 @@ assign [app_id="org.wezfurlong.wezterm"] $ws1
 assign [app_id="thunar"] $ws1
 assign [class="obsidian"] $ws2
 assign [app_id="okular"] $ws4
+assign [app_id="org.pwmt.zathura"] $ws4
 assign [app_id="org.mozilla.firefox"] $ws3
 assign [app_id="zen"] $ws3
 assign [class="Spotify"] $ws5
+assign [app_id="com.github.neithern.g4music"] $ws5
 
 # Configuración de Ventana
 for_window [app_id="org.mozilla.firefox"] fullscreen enable, focus
@@ -116,6 +128,7 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+Shift+f floating toggle
 bindsym $mod+s exec grim -g "$(slurp)" - | wl-copy
 bindsym $mod+p exec ~/.config/swaylock/lock.sh
+bindsym $mod+w exec ~/Escritorio/3.Recursos/dotfiles/Scripts/waybar.sh
 
 # Brillo
 bindsym XF86MonBrightnessUp exec brightnessctl set +10%
@@ -127,14 +140,17 @@ bindsym XF86AudioLowerVolume exec ~/.config/sway/volume.sh down
 bindsym XF86AudioMute exec ~/.config/sway/volume.sh mute
 
 
-# Configuración de salida (DE-like behavior)
+exec_always /usr/libexec/polkit-gnome-authentication-agent-1
+exec_always dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway
+exec_always systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP DBUS_SESSION_BUS_ADDRESS
+exec_always /usr/libexec/xdg-desktop-portal-wlr
+exec_always /usr/libexec/xdg-desktop-portal
 exec_always --no-startup-id swayidle -w \
     timeout 300 '~/.config/swaylock/lock.sh'" \
     timeout 600 'swaymsg "output * dpms off"' \
     resume 'swaymsg "output * dpms on"'
 
 exec_always ~/.config/sway/monitor_hotplug.sh
-exec_always pgrep -x waybar || waybar 
 exec_always pgrep nm-applet || nm-applet
 exec_always mako
 exec_always pgrep blueman-applet || blueman-applet

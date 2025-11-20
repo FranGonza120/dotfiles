@@ -101,7 +101,7 @@ if [[ $# -ge 1 ]]; then
 	for arg in "$@"; do
 		case $arg in
 			hyprland|flatpaks|gtk-apps|nvim|wezterm|wofi|zathura|syncthing|nextdns|font|starship|bleachbit|bash|keyboard-layout)
-				bash "$POSTINSTALL_DIR/setup/$arg.sh"
+				source "$POSTINSTALL_DIR/setup/$arg.sh"
 				;;
 			*)
 				echo "❌ Opción desconocida: $arg"
