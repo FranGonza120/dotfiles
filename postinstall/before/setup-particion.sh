@@ -10,7 +10,7 @@ else
 	mkdir -p "$HOME/Escritorio"
 	rm -rf $HOME/Escritorio/*
 
-	UUID=$(blkid -s UUID -o value  "/dev/disk/by-label/Personal" || true)
+	UUID=$(sudo blkid -s UUID -o value  "/dev/disk/by-label/Personal" || true)
 
 	# Verificación de que la partición se encuentra en el sistema
 	if [[ -z "$UUID" ]]; then
