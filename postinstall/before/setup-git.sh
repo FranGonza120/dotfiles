@@ -17,7 +17,14 @@ else
 	echo "Agregue una nueva clave SSH en github y copie la siguiente clave:"
 	cat "$HOME/.ssh/id_ed25519.pub"
 	read -rp "Cuando agregue la clave y copie el contendido presione Enter." _
-	echo "Se instaló la clave SSH"
+	#Confirmación de conexióna github
+	echo "Confirmando la ssh-key con github.com"
+	echo "si pregunta sobre establecer conexion pone yes"
+	if ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
+	    echo "✔ SSH con GitHub funcionando (key OK)"
+	else
+	    echo "❌ No se pudo autenticar con GitHub vía SSH"
+	fi
 fi
 
 # Verificar dotfiles disponibles
