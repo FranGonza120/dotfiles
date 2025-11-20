@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 
 sudo dnf install -C -y thunar thunar-archive-plugin thunar-volman file-roller lxappearance gtk-murrine-engine
 

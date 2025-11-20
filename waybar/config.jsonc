@@ -1,0 +1,54 @@
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": [
+        "hyprland/workspaces"
+    ],
+  "modules-right": [
+    "pulseaudio",
+    "battery",
+    "clock", 
+    "tray",
+    "custom/power"
+  ],
+  "hyprland/workspaces": {
+    "format": "{name}: {icon}",
+    "format-icons": {
+      "active": "",
+      "default": ""
+    }
+  },
+  "tray": {
+    "icon-size": 21,
+    "spacing": 10
+  },
+  "clock": {
+    "tooltip": false,
+    "format": " {:L%H:%M %a %d %b}",
+
+    "timezone": "America/Argentina/Buenos_Aires"
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "",
+    "format-icons": {
+      "default": ["", "", " "]
+    },
+    "on-click": "pavucontrol"
+  },
+  "battery": {
+    "format": "{capacity}% {icon}",
+    "format-alt": "{time} {icon}",
+    "format-icons": ["󱃍", "󰁼", "󰁾", "󰂁", "󰁹"],
+    "format-charging": "{capacity}% 󰂄",
+    "interval": 30,
+    "states": {
+      "warning": 25,
+      "critical": 10
+    },
+  },
+  "custom/power": {
+    "on-click": "~/.config/waybar/apagar.sh",
+    "format": "⏻",
+  },
+}

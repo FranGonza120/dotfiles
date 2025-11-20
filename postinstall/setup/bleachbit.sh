@@ -1,4 +1,9 @@
-!#/bin/bash
+#!/bin/bash
 
-sudo dnf install -C -y bleachbit
-echo "Bleachbit instalado correctamente
+
+if command -v bleachbit >/dev/null 2>&1; then
+    echo "Bleachbit ya se encuentra instalado"
+else
+    sudo dnf install -y bleachbit
+    echo "Bleachbit instalado correctamente"
+fi

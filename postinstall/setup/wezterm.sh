@@ -92,5 +92,5 @@ EOF
 fi
 
 echo "Copiendo configuración de wezterm"
-cp -r "$DOTFILES_DIR/wezterm" "$CONFIG_DIR/wezterm"
+cp -r "$DOTFILES_DIR/wezterm" "$CONFIG_DIR/"
 

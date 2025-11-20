@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 
 if command -v nextdns >/dev/null 2>&1; then
     echo "✔ nextdns ya está instalado"
