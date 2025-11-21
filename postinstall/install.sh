@@ -96,12 +96,14 @@ fi
 echo "Activando scripts ejecutables de dotfiles"
 find "$DOTFILES_DIR" -name "*.sh" -exec chmod +x {} \;
 
+# Exportando variables para los scripts hijos
+export DOTFILES_DIR CONFIG_DIR PARTICION_DIR POSTINSTALL_DIR
 
 if [[ $# -ge 1 ]]; then
 	for arg in "$@"; do
 		case $arg in
 			hyprland|flatpaks|gtk-apps|nvim|wezterm|wofi|zathura|syncthing|nextdns|font|starship|bleachbit|bash|keyboard-layout)
-				source "$POSTINSTALL_DIR/setup/$arg.sh"
+				bash "$POSTINSTALL_DIR/setup/$arg.sh"
 				;;
 			*)
 				echo "❌ Opción desconocida: $arg"

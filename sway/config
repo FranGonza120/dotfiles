@@ -109,8 +109,7 @@ bindsym $mod+Right focus output right
 # Mover el cursor al monitor izquierdo o derecho
 bindsym $mod+Ctrl+Left  exec swaymsg seat seat0 cursor move -1920 0
 bindsym $mod+Ctrl+Right exec swaymsg seat seat0 cursor move 1920 0
-bindsym $mod+Shift+n move workspace to output HDMI-A-1
-bindsym $mod+n move workspace to output eDP-1
+bindsym $mod+m move workspace to output next
 
 
 

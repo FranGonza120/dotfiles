@@ -5,6 +5,7 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 local scheme = wezterm.get_builtin_color_schemes()["Tokyo Night"]
 local modal = require("plugin.init")
+config.enable_wayland = true
 modal.apply_to_config(config)
 modal.set_default_keys(config)
 
