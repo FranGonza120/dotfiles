@@ -71,6 +71,8 @@ else
 	else
 	    echo "❌ No se pudo autenticar con GitHub vía SSH"
 	fi
+	echo "Vaya a tty3 y ejecute nuevamente el script para evitar problemas de compatibilidad"
+	exit 0
 fi
 
 # Verificar dotfiles disponibles

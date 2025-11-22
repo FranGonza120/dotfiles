@@ -64,15 +64,9 @@ local function create_status_text(left_seperator, key_hints, mode)
 	})
 end
 
-local function enable_defaults(url)
-	local plugin
-	for _, p in ipairs(wezterm.plugin.list()) do
-		if p.url == url then
-			plugin = p
-			break
-		end
-	end
-	package.path = package.path .. ";" .. plugin.plugin_dir .. "/defaults/?.lua"
+local function enable_defaults()
+	local wezterm = require("wezterm")
+	package.path = package.path .. ";" .. wezterm.home_dir .. "/.config/wezterm/defaults/?.lua"
 end
 
 ---sets the current modal status to the right status
@@ -180,7 +174,7 @@ local function exit_all_modes(name)
 end
 
 local function apply_to_config(config)
-	enable_defaults("https://github.com/MLFlexer/modal.wezterm")
+	enable_defaults()
 
 	if not config.colors then
 		if config.color_scheme then

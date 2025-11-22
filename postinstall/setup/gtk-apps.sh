@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo dnf install -C -y thunar thunar-archive-plugin thunar-volman file-roller lxappearance gtk-murrine-engine
+sudo dnf install -y thunar thunar-archive-plugin thunar-volman file-roller lxappearance gtk-murrine-engine
 
 #Instalar tema TokyoNight
 # Repositorio para clonar https://github.com/Fausto-Korpsvart/Tokyonight-GTK-Theme.git 
@@ -15,6 +15,10 @@ else
     sudo chmod +x install.sh
     mkdir -p "$HOME/.themes"
     ./install.sh -c dark -l 
+
+    sudo mv ./icons/Tokyonight-Dark/ /usr/share/icons/
+
+    # Eliminando Carpeta
     cd "$HOME/Escritorio/1.Projectos/repos"
     rm -rf Tokyonight-GTK-Theme
 fi
