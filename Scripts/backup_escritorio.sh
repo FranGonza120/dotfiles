@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuración
-PARTICION="/dev/sda2"       # Reemplazá con tu partición real (ej: /dev/sdb1)
+PARTICION="/dev/disk/by-label/BACKUP"
 PUNTO_MONTAJE="/mnt/backup"
 ORIGEN="/home/frangonza120/Escritorio/"
 DESTINO="$PUNTO_MONTAJE/EscritorioBackup"
