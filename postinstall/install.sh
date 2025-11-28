@@ -51,6 +51,8 @@ if command -v git >/dev/null 2>&1; then
 	echo "git se encuentra instalado"
 else
 	sudo dnf install -y git
+	git config --global user.email "franco20047@gmail.com"
+	git config --global user.name "FranGonza120"
 fi
 
 if [[ -f "$HOME/.ssh/id_ed25519.pub" ]]; then 
