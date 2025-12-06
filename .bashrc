@@ -12,6 +12,7 @@ fi
 export PATH
 export XCURSOR_THEME=Capitaine-cursors
 export XCURSOR_SIZE=24
+export GTK_THEME=Flat-Remix-GTK-Grey-Darkest-Solid
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
