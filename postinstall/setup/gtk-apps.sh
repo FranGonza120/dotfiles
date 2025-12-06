@@ -27,5 +27,6 @@ else
     rm -rf flat-remix-gtk
     rm -rf Flat-Remix
     echo "El tema Flat-Remix-GTk-Grey para GTK y sus iconos han sido instalados"
+    echo "Recuerde poner una variable GTK_THEME=Flat-Remix-GTK-Grey-Darkest-Solid en .bashrc"
 fi
 
