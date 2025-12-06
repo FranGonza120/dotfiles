@@ -18,18 +18,18 @@ else
     ./install.sh -c dark -l 
 
     # Instalando paquetes de iconos tanto del tema de gtk como otro paquete de tema TokyoNight
-    sudo mv ./icons/Tokyonight-Dark/ "$HOME/.local/share/icons/"
+    sudo cp -r ./icons/Tokyonight-Dark/ "$HOME/.local/share/icons/"
     sudo cp -r "$DOTFILES_DIR/icons/TokyoNight-SE" "$HOME/.local/share/icons/"
 
     # Colocando tema en GTk-3.0
     mkdir -p ~/.config/gtk-3.0
 
     cat > ~/.config/gtk-3.0/settings.ini <<EOF
-    [Settings]
-    gtk-theme-name=Tokyonight-Dark
-    gtk-icon-theme-name=TokyoNight-SE
-    gtk-font-name=JetBrainsMono Nerd Font Mono 10
-    EOF
+[Settings]
+gtk-theme-name=Tokyonight-Dark
+gtk-icon-theme-name=TokyoNight-SE
+gtk-font-name=JetBrainsMono Nerd Font Mono 10
+EOF
 
     # Eliminando Carpeta
     cd "$HOME/Escritorio/1.Projectos/repos"

@@ -11,13 +11,13 @@ else
     sudo cp -rf . /usr/share/sddm/themes/silent/
     sudo cp -r /usr/share/sddm/themes/silent/fonts/* /usr/share/fonts/
     sudo tee /etc/sddm.conf > /dev/null <<EOF
-    [General]
-    InputMethod=qtvirtualkeyboard
-    GreeterEnvironment=QML2_IMPORT_PATH=/usr/share/sddm/themes/silent/components/,QT_IM_MODULE=qtvirtualkeyboard
+[General]
+InputMethod=qtvirtualkeyboard
+GreeterEnvironment=QML2_IMPORT_PATH=/usr/share/sddm/themes/silent/components/,QT_IM_MODULE=qtvirtualkeyboard
 
-    [Theme]
-    Current=silent
-    EOF
+[Theme]
+Current=silent
+EOF
     cd ..
     rm -rf SilentSDDM/
     echo "El tema SilentSDDM se ha instalado correctamente"
