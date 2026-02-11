@@ -1,7 +1,7 @@
 #!/bin/bash
 
-read -rp "Ponga la IP de su dispositivo como argumento y ponga el proceso en el puerto 5555. Si está preparado presione Enter." _
+read -p "Active el Debuggin Inalámbrico. Ponga la IP de su dispositivo como primer argumento y ponga el nro del puerto como segundo argumento. Si está preparado presione Enter." IP PUERTO
 
-adb connect $1:5555
+adb connect $IP:$PUERTO
 
 scrcpy --video-bit-rate 12M --max-fps 60 --display-buffer=80
