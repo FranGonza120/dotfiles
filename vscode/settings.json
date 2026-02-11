@@ -1,0 +1,131 @@
+{
+    // Extensiones: Vim, fzf fuzzy quick open, plantUML, Tokyo Night, VSCode Harpoon, vsnetrw
+    "workbench.colorTheme": "Tokyo Night",
+    "editor.fontFamily": "'JetBrainsMono Nerd Font Mono', monospace",
+    "editor.fontSize": 16,
+    "editor.minimap.enabled": false,
+    "breadcrumbs.enabled": false,
+    "workbench.activityBar.location": "hidden",
+    "editor.codeLensFontFamily": "'JetBrainsMono Nerd Font Mono', monospace",
+    "editor.inlayHints.fontFamily": "'JetBrainsMono Nerd Font Mono', monospace",
+    "extensions.ignoreRecommendations": true,
+    "chat.commandCenter.enabled": false,
+    "chat.viewWelcome.enabled": false,
+    "chat.viewTitle.enabled": false,
+    "workbench.layoutControl.enabled": false,
+    // Configuraciones de la terminal
+    "terminal.integrated.tabs.enabled": false,
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.profiles.linux": {
+        "bash": {
+        "path": "/usr/bin/bash",
+        "args": ["--login"]
+        }
+    },
+    // Tab única
+    "workbench.editor.showTabs": "none",
+    "workbench.editor.limit.value": 1,
+    "workbench.editor.enablePreview": true,
+    "workbench.editor.closeOnFileDelete": true,
+    // Configuración de Extensión de vim
+    "editor.lineNumbers": "relative",
+    "vim.leader": "<Space>",
+    "vim.hlsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.autoindent": true,
+    "vim.normalModeKeyBindingsNonRecursive": [
+        // holo a
+    {
+        "before": ["<leader>", "q"],
+        "commands": ["workbench.action.closeActiveEditor"]
+    },
+    {
+        "before": ["<leader>", "w"],
+        "commands": ["workbench.action.files.save"]
+    },
+    {
+        "before": ["<leader>", "s", "f"],
+        "commands": ["workbench.action.quickOpen"]
+    },
+    { // lo voy a tener que reemplazar con el fuzzy probablmente, también al comando de arriba 
+        "before": ["<leader>", "s", "g"],
+        "commands": ["fzf-quick-open.runFzfSearch"]
+    },
+    {
+        "before": ["g", "d"],
+        "commands": ["editor.action.revealDefinition"]
+    },
+    {
+        "before": ["<leader>", "/"],
+        "commands": ["actions.find"]
+    },
+    {
+        "before": ["<leader>", "t"],
+        "commands": ["workbench.action.terminal.toggleTerminal"]
+    }, 
+    {
+        "before": ["-"],
+        "commands": ["vsnetrw.open"],
+        "when": "editorLangId != vsnetrw"
+    }, 
+    {
+      "before": ["<leader>", "a"],
+      "commands": ["vscode-harpoon.addEditor"]
+    },
+    {
+      "before": ["<leader>", "p", "e"],
+      "commands": ["vscode-harpoon.editorQuickPick"]
+    },
+    {
+      "before": ["<leader>", "h"],
+      "commands": ["vscode-harpoon.gotoEditor1"]
+    },
+    {
+      "before": ["<leader>", "j"],
+      "commands": ["vscode-harpoon.gotoEditor2"]
+    },
+    {
+      "before": ["<leader>", "k"],
+      "commands": ["vscode-harpoon.gotoEditor3"]
+    },
+    {
+      "before": ["<leader>", "l"],
+      "commands": ["vscode-harpoon.gotoEditor4"]
+    },
+    {
+      "before": ["<leader>", "H"],
+      "commands": ["vscode-harpoon.addEditor1"]
+    },
+    {
+      "before": ["<leader>", "J"],
+      "commands": ["vscode-harpoon.addEditor2"]
+    },
+    {
+      "before": ["<leader>", "K"],
+      "commands": ["vscode-harpoon.addEditor3"]
+    },
+    {
+      "before": ["<leader>", "L"],
+      "commands": ["vscode-harpoon.addEditor4"]
+    },
+    ],
+    "vim.insertModeKeyBindings": [
+    {
+        "before": ["<C-y>"],
+        "commands": ["acceptSelectedSuggestion"]
+    },
+    {
+        "before": ["<C-n>"],
+        "commands": ["selectNextSuggestion"]
+    },
+    {
+        "before": ["<C-p>"],
+        "commands": ["selectPrevSuggestion"]
+    }
+    ],
+    "workbench.editor.limit.enabled": true,
+    "workbench.navigationControl.enabled": false,
+    "window.commandCenter": false,
+    "workbench.editor.editorActionsLocation": "hidden",
+    "workbench.startupEditor": "none",
+}

@@ -9,10 +9,14 @@ fi
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
+
+PATH="/opt/jdk-17.0.2/bin:$PATH"
+PATH="$HOME/Escritorio/3.Recursos/fluttersdk/flutter/bin:$PATH"
 export PATH
 export XCURSOR_THEME=Capitaine-cursors
 export XCURSOR_SIZE=24
 export GTK_THEME=Flat-Remix-GTK-Grey-Darkest-Solid
+export FZF_DEFAULT_COMMAND='fd'
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
