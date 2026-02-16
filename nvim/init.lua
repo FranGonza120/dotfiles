@@ -1222,6 +1222,143 @@ require("lazy").setup({
 			-- see below for full list of options 👇
 		},
 	},
+	{
+		"saghen/blink.cmp",
+		-- optional: provides snippets for the snippet source
+		dependencies = { "rafamadriz/friendly-snippets" },
+
+		-- use a release tag to download pre-built binaries
+		version = "1.*",
+		-- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+		-- build = 'cargo build --release',
+		-- If you use nix, you can build from source using latest nightly rust with:
+		-- build = 'nix run .#build-plugin',
+
+		---@module 'blink.cmp'
+		---@type blink.cmp.Config
+		opts = {
+			-- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+			-- 'super-tab' for mappings similar to vscode (tab to accept)
+			-- 'enter' for enter to accept
+			-- 'none' for no mappings
+			--
+			-- All presets have the following mappings:
+			-- C-space: Open menu or open docs if already open
+			-- C-n/C-p or Up/Down: Select next/previous item
+			-- C-e: Hide menu
+			-- C-k: Toggle signature help (if signature.enabled = true)
+			--
+			-- See :h blink-cmp-config-keymap for defining your own keymap
+			keymap = { preset = "default" },
+
+			appearance = {
+				-- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+				-- Adjusts spacing to ensure icons are aligned
+				nerd_font_variant = "mono",
+			},
+
+			-- (Default) Only show the documentation popup when manually triggered
+			completion = { documentation = { auto_show = false } },
+
+			-- Default list of enabled providers defined so that you can extend it
+			-- elsewhere in your config, without redefining it, due to `opts_extend`
+			sources = {
+				default = { "lsp", "path", "snippets", "buffer" },
+			},
+
+			-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+			-- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+			-- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+			--
+			-- See the fuzzy documentation for more information
+			fuzzy = { implementation = "prefer_rust_with_warning" },
+		},
+		opts_extend = { "sources.default" },
+	},
+	{
+		"hxueh/beancount.nvim",
+		ft = { "beancount", "bean" },
+		dependencies = {
+			{
+				"saghen/blink.cmp",
+				optional = true,
+				opts = function(_, opts)
+					table.insert(opts.sources.default, "beancount")
+					opts.sources.providers = opts.sources.providers or {}
+					opts.sources.providers.beancount = {
+						name = "beancount",
+						module = "beancount.completion.blink",
+						score_offset = 100,
+						opts = {
+							trigger_characters = { ":", "#", "^", '"', " " },
+						},
+					}
+					return opts
+				end,
+			},
+			{
+				"L3MON4D3/LuaSnip",
+			},
+		},
+		config = function()
+			require("beancount").setup({
+				-- Alignment & formatting
+				separator_column = 70, -- Column for decimal separator alignment
+				instant_alignment = true, -- Align amounts on decimal point entry
+				fixed_cjk_width = false, -- Treat CJK characters as 2-width
+				auto_format_on_save = true, -- Auto formatting file on saving
+				auto_fill_amounts = false, -- Auto-fill missing amounts on save (opt-in)
+
+				-- Completion & input
+				complete_payee_narration = true, -- Include payees/narrations
+
+				-- Files & paths
+				main_bean_file = "/home/frangonza120/Escritorio/3.Recursos/Finanzas/cordoba-univ.beancount", -- Path to main beancount file
+				python_path = "/home/frangonza120/Escritorio/3.Recursos/Finanzas/beancount-venv/bin/python3", -- Python executable path
+
+				-- Diagnostics & warnings
+				flag_warnings = { -- Transaction flag warning levels
+					["*"] = nil, -- FLAG_OKAY - Transactions that have been checked
+					["!"] = vim.diagnostic.severity.WARN, -- FLAG_WARNING - Mark by user as something to be looked at later
+					["P"] = nil, -- FLAG_PADDING - Transactions created from padding directives
+					["S"] = nil, -- FLAG_SUMMARIZE - Transactions created due to summarization
+					["T"] = nil, -- FLAG_TRANSFER - Transactions created due to balance transfers
+					["C"] = nil, -- FLAG_CONVERSIONS - Transactions created to account for price conversions
+					["M"] = nil, -- FLAG_MERGING - A flag to mark postings merging together legs for average cost
+				},
+				auto_save_before_check = true, -- Auto-save before diagnostics
+
+				-- Features
+				inlay_hints = true, -- Show inferred amounts
+				snippets = {
+					enabled = true, -- Enable snippet support
+					date_format = "%Y-%m-%d", -- Date format for snippets
+				},
+
+				-- Key mappings (customizable)
+				keymaps = {
+					goto_definition = "gd", -- Go to definition
+					next_transaction = "]]", -- Next transaction
+					prev_transaction = "[[", -- Previous transaction
+				},
+
+				-- UI settings
+				ui = {
+					virtual_text = true, -- Show diagnostics as virtual text
+					signs = true, -- Show diagnostic signs
+					update_in_insert = false, -- Don't update while typing
+					severity_sort = true, -- Sort by severity
+				},
+			})
+			-- Treesitter setup
+			require("nvim-treesitter.configs").setup({
+				ensure_installed = { "beancount" },
+				highlight = { enable = true },
+				incremental_selection = { enable = true },
+				indent = { enable = true },
+			})
+		end,
+	},
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
 	-- init.lua. If you want these files, they are in the repository, so you can just download them and
 	-- place them in the correct locations.

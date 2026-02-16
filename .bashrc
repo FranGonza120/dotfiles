@@ -11,7 +11,10 @@ if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
 fi
 
 PATH="/opt/jdk-17.0.2/bin:$PATH"
+# Flutter sdk
 PATH="$HOME/Escritorio/3.Recursos/fluttersdk/flutter/bin:$PATH"
+# Beancount environment
+PATH="$HOME/Escritorio/3.Recursos/Finanzas/beancount-venv/bin:$PATH"
 export PATH
 export XCURSOR_THEME=Capitaine-cursors
 export XCURSOR_SIZE=24
