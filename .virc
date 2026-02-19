@@ -1,0 +1,24 @@
+" =====================
+" Importante
+" =====================
+set nocompatible
+set encoding=utf-8
+set relativenumber
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set autoindent
+
+" =====================
+" Adicional
+" =====================
+set wildmenu
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+set scrolloff=5
+set splitbelow
+set splitright
+set nowrap

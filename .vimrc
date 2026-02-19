@@ -1,10 +1,36 @@
+" =========================
+" Importantes
+" =========================
 set nocompatible
-filetype plugin on
+syntax on
+set number
 set relativenumber
-set tabstop=4
-set smartcase
 set encoding=utf-8
-syntax enable
-colorscheme slate
-set autoread
-set clipboard=unnamed
+colorscheme retrobox
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set autoindent
+set copyindent
+
+" =========================
+" Adicionales
+" =========================
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+filetype plugin indent on
+set wildmenu
+set lazyredraw
+set ttyfast
+set completeopt=menuone,noinsert,noselect
+set omnifunc=syntaxcomplete#Complete
+set splitbelow
+set splitright
+set scrolloff=8
+set sidescrolloff=8
+set foldmethod=indent
+set foldlevel=99
+set signcolumn=yes
