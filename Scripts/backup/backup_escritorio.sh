@@ -21,7 +21,7 @@ sudo mkdir -p "$DESTINO"
 
 # Ejecutar backup con rsync
 echo "🔄 Iniciando backup de $ORIGEN a $DESTINO..."
-sudo rsync -av --delete "$ORIGEN" "$DESTINO"
+sudo rsync -av --delete-excluded --delete --exclude-from="$HOME/Escritorio/3.Recursos/dotfiles/Scripts/backup/.rsync_excludes" "$ORIGEN" "$DESTINO"
 
 echo "✅ Backup completado."
 
