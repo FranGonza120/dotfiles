@@ -3,18 +3,76 @@
 
 set -euo pipefail
 
-#opción help
-if [[ ${1:-} == "--help" ]]; then
-    echo "Uso: ./postinstall.sh [opciones]"
-    echo "Opciones disponibles:"
-    echo "  hyprland  flatpaks  gtk-apps  nvim  wezterm  wofi  zathura  syncthing  nextdns  font  starship  bleachbit  bash  keyboard-layout"
-    exit 0
-fi
-
 PARTICION_DIR=$HOME/Escritorio/3.Recursos
 DOTFILES_DIR=$HOME/Escritorio/3.Recursos/dotfiles
 POSTINSTALL_DIR=$DOTFILES_DIR/postinstall
 CONFIG_DIR=$HOME/.config
+
+SCRIPTS=()
+
+for file in "$POSTINSTALL_DIR"/setup/*.sh; do
+    filename=$(basename "$file" .sh)
+    SCRIPTS+=("$filename")
+done
+
+function scripts_a_ejecutar() {
+
+	INSTALACION_DEFAULT=(
+		bash
+		hyprland
+		flatpaks
+		gtk-apps
+		nvim
+		wofi
+		zathura
+		syncthing
+		nextdns
+		font
+		starship
+		bleachbit
+		keyboard-layout
+		alacritty
+	)
+
+	if [[ $# -ge 1 ]]; then
+		#pattern=$(IFS="|"; printf "%s" "${SCRIPTS[*]}")
+		for arg in "$@"; do
+		    valid=false
+
+		    for script in "${SCRIPTS[@]}"; do
+			if [[ "$arg" == "$script" ]]; then
+			    valid=true
+			    break
+			fi
+		    done
+
+		    if ! $valid; then
+			echo "La opción --> $arg <-- no existe dentro de los scripts válidos"
+			exit 1
+		    fi
+		done
+		SCRIPTS_SELECCIONADOS=("$@")
+	else
+		SCRIPTS_SELECCIONADOS=("${INSTALACION_DEFAULT[@]}")
+	fi
+}
+
+function instalacion() {
+	# Exportando variables para los scripts hijos
+	export DOTFILES_DIR CONFIG_DIR PARTICION_DIR POSTINSTALL_DIR
+	for arg in "$@"; do
+		echo "$arg"
+		bash "$POSTINSTALL_DIR/setup/$arg.sh"
+	done
+}
+
+#opción help
+if [[ ${1:-} == "--help" ]]; then
+    echo "Uso: ./postinstall.sh [opciones]"
+    echo "Opciones disponibles:"
+    echo "${SCRIPTS[@]}"
+    exit 0
+fi
 
 sudo dnf -y update
 sudo dnf -y makecache
@@ -100,24 +158,28 @@ fi
 echo "Activando scripts ejecutables de dotfiles"
 find "$DOTFILES_DIR" -name "*.sh" -exec chmod +x {} \;
 
-# Exportando variables para los scripts hijos
-export DOTFILES_DIR CONFIG_DIR PARTICION_DIR POSTINSTALL_DIR
 
-if [[ $# -ge 1 ]]; then
-	for arg in "$@"; do
-		case $arg in
-			hyprland|flatpaks|gtk-apps|nvim|wezterm|wofi|zathura|syncthing|nextdns|font|starship|bleachbit|bash|keyboard-layout)
-				bash "$POSTINSTALL_DIR/setup/$arg.sh"
-				;;
-			*)
-				echo "❌ Opción desconocida: $arg"
-				exit 1 ;;
-		esac
-	done
-else
-	echo "Ejecutando todos los scripts disponibles"
-	find "$POSTINSTALL_DIR/setup" -name "*.sh" -exec bash {} \;
-fi
+INSTALACION_DEFAULT=(
+	hyprland
+	flatpaks
+	gtk-apps
+	nvim
+	wofi
+	zathura
+	syncthing
+	nextdns
+	font
+	starship
+	bleachbit
+	keyboard-layout
+	alacritty
+)
+
+SCRIPTS_SELECIONADOS=()
+
+scripts_a_ejecutar "$@"
+echo "${SCRIPTS_SELECCIONADOS[@]}"
+instalacion "${SCRIPTS_SELECCIONADOS[@]}"
 
 echo "El postinstall ha terminado"
 

@@ -1,0 +1,102 @@
+* {
+   font-family: "JetBrainsMono Nerd Font Mono" !important;
+}
+
+/*.monaco-action-bar .actions-container {
+   display: none !important;
+}*/
+
+.monaco-workbench .part>.title>.title-label {
+   padding-left: 0px !important;
+}
+
+.quick-input-widget {
+   top: 25vh !important;
+}
+
+.quick-input-widget.show-file-icons {
+   box-shadow: none !important;
+}
+
+/*.quick-input-list .scrollbar {
+   display: none;
+}*/
+.quick-input-titlebar {
+   background: #100B15 !important;
+}
+
+footer#workbench\.parts\.statusbar.part.statusbar.status-border-top {
+   --status-border-top-color: none !important;
+}
+
+div#workbench\.parts\.sidebar.part.sidebar.right.pane-composite-part {
+    border-left: none !important;
+}
+
+div#workbench\.parts\.titlebar.part.titlebar {
+   border-bottom: none !important;
+}
+
+div.title-border-bottom {
+   --title-border-bottom-color: none !important;
+}
+
+/*a.window-appicon {
+   display: none !important;
+}*/
+a.statusbar-item-label {
+   font-weight: bold;
+}
+
+.notificacion-toast {
+   box-shadow: none !important;
+}
+
+
+/*.monaco-action-bar.quick-input-inline-action-bar {
+   display: none;
+}
+   */
+
+.editor-widget.find-widget {
+   box-shadow: none;
+   border-radius: 4px;
+}
+
+/*.monaco-workbench-container .part.editor > .content .editor-group-container > .title.title-border-bottom:after {
+   display: none;
+}
+*/
+/*
+.monaco-scrollable-element > .shadow.top {
+   display: none;
+}*/
+
+.workbench .part>.title>.title-label {
+   padding: 0 !important;
+}
+
+.monaco-workbench-container .monaco-list:not(.element-focused):focus:before {
+   outline: none !important;
+}
+
+.monaco-list-row.focused {
+   outline: none !important;
+}
+/*
+.monaco-editor .scroll-decoration {
+   display: none;
+}*/
+
+/*.monaco-workbench .part>.title>.title-actions {
+   display: none !important;
+}*/
+
+/*.title-actions {
+   display: none !important;
+}
+*/
+/*.sidebar {
+   border: none !important;
+}
+*/

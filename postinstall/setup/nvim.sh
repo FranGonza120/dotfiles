@@ -8,7 +8,7 @@ else
 fi
 
 echo "Copiando dotfiles de nvim"
-cp -r "$DOTFILES_DIR/nvim" "$CONFIG_DIR/"
+ln -snf "$DOTFILES_DIR/nvim" "$CONFIG_DIR/nvim"
 
 echo "nvim configurado correctamente"
 

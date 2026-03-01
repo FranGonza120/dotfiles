@@ -18,11 +18,10 @@ fi
 
 
 FLATPAKS=(
-	com.discordapp.Discord
-	com.spotify.Client
+	org.keepassxc.KeePassXC
+	dev.vencord.Vesktop
 	com.github.neithern.g4music
 	md.obsidian.Obsidian
-	us.zoom.Zoom
 	app.zen_browser.zen
 )
 

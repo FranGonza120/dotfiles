@@ -1,33 +1,283 @@
+// Place your key bindings in this file to override the defaults
 [
+    // Todos los comandos
     {
-        "key": "ctrl+shift+n",
+        "key": "ctrl-p",
+        "command": "workbench.action.showCommands",
+        "when": "vim.mode == 'Normal' && (editorFocus || !inputFocus)"
+    },
+    // Abrir Proyecto
+    {
+        "key": "ctrl+o ctrl+p",
+        "command": "workbench.action.files.openFolder",
+        "when": "openFolderWorkspaceSupport"
+    },
+    // Navegación entre paneles auxiliar
+    {
+        "key": "ctrl-h",
+        "command": "workbench.action.navigateLeft"
+    },
+    {
+        "key": "ctrl-l",
+        "command": "workbench.action.navigateRight"
+    },
+    {
+        "key": "ctrl-k",
+        "command": "workbench.action.navigateUp"
+    },
+    {
+        "key": "ctrl-j",
+        "command": "workbench.action.navigateDown"
+    },
+    // Explorador de archivos
+    {
+        "key": "space e",
+        "command": "workbench.view.explorer",
+        "when": "!explorerViewletVisible && (editorFocus || !inputFocus) && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space e",
+        "command": "workbench.action.toggleSidebarVisibility",
+        "when": "explorerViewletVisible && (editorFocus || !inputFocus) && vim.mode == 'Normal'"
+    },
+    {
+        "key": "alt-b",
+        "command": "workbench.action.toggleSidebarVisibility",
+        "when": "explorerViewletVisible"
+    },
+    {
+        "key": "shift-r",
+        "command": "renameFile",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+    },
+    {
+        "key": "c",
+        "command": "filesExplorer.copy",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+    },
+    {
+        "key": "p",
+        "command": "filesExplorer.paste",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+    },
+    {
+        "key": "x",
+        "command": "filesExplorer.cut",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+    },
+    {
+        "key": "shift+d",
+        "command": "deleteFile",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+    },
+    {
+        "key": "d",
+        "command": "explorer.newFolder",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+    },
+    {
+        "key": "%",
+        "command": "explorer.newFile",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+    },
+    //Averiguar que hacen estos comandos
+    {
+        "key": "v",
+        "command": "explorer.openToSide",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+    },
+    {
+        "key": "s",
+        "command": "runCommands",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus",
+        "args": {
+        "commands": [
+            "workbench.action.splitEditorDown",
+            "explorer.openAndPassFocus",
+            "workbench.action.closeOtherEditors"
+        ]
+        }
+    },
+    // Navegación entre archivos
+    {
+        "key": "space f f",
+        "command": "workbench.action.quickOpen",
+        "when": "(editorTextFocus || !inputFocus) && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space f g",
+        "command": "workbench.action.findInFiles",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space a",
+        "command": "vscode-harpoon.addEditor",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space s",
+        "command": "vscode-harpoon.editEditors",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space p",
+        "command": "vscode-harpoon.editorQuickPick",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space h",
+        "command": "vscode-harpoon.gotoEditor1",
+        "when": "(editorTextFocus || !inputFocus) && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space j",
+        "command": "vscode-harpoon.gotoEditor2",
+        "when": "(editorTextFocus || !inputFocus) && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space k",
+        "command": "vscode-harpoon.gotoEditor3",
+        "when": "(editorTextFocus || !inputFocus) && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space l",
+        "command": "vscode-harpoon.gotoEditor4",
+        "when": "(editorTextFocus || !inputFocus) && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space shift-h",
+        "command": "vscode-harpoon.addEditor1",
+        "when": "(editorTextFocus || !inputFocus) && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space shift-j",
+        "command": "vscode-harpoon.addEditor2",
+        "when": "(editorTextFocus || !inputFocus) && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space shift-k",
+        "command": "vscode-harpoon.addEditor3",
+        "when": "(editorTextFocus || !inputFocus) && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space shift-l",
+        "command": "vscode-harpoon.addEditor4",
+        "when": "(editorTextFocus || !inputFocus) && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space shift-h",
+        "command": "vscode-harpoon.addEditor1",
+        "when": "(editorTextFocus || !inputFocus) && vim.mode == 'Normal'"
+    },
+    {
+        "key": "space b d",
+        "command": "workbench.action.closeActiveEditor",
+        "when": "(vim.mode == 'Normal' && editorTextFocus) || !inputFocus"
+    },
+    {
+        "key": "space b o",
+        "command": "workbench.action.closeOtherEditors",
+        "when": "(vim.mode == 'Normal' && editorTextFocus) || !inputFocus"
+    },
+    // Programación
+    {
+        "key": "shift-k",
+        "command": "editor.action.showHover",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "space c r",
+        "command": "editor.action.rename",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "space c s",
+        "command": "workbench.action.gotoSymbol",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "space g r",
+        "command": "editor.action.goToReferences",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "space g d",
+        "command": "editor.action.revealDefinition",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "ctrl-y",
+        "command": "acceptSelectedSuggestion",
+        "when": "vim.mode == 'Insert' && editorTextFocus"
+    },
+    {
+        "key": "ctrl-p",
+        "command": "selectPrevSuggestion",
+        "when": "vim.mode == 'Insert' && editorTextFocus"
+    },
+    {
+        "key": "ctrl-n",
+        "command": "selectNextSuggestion",
+        "when": "vim.mode == 'Insert' && editorTextFocus"
+    },
+    // Debug
+    {
+        "key": "space d a",
+        "command": "workbench.action.debug.selectandstart",
+        "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus) && debuggersAvailable"
+    },
+    {
+        "key": "space d t",
+        "command": "workbench.action.debug.stop",
+        "when": "vim.mode == 'Normal' && editorTextFocus && inDebugMode && !focusedSessionIsAttached"
+    },
+    {
+        "key": "space d o",
+        "command": "workbench.action.debug.stepOver",
+        "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus) && inDebugMode && debugState == 'stopped'"
+    },
+    {
+        "key": "space d b",
+        "command": "editor.debug.action.toggleBreakpoint",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "space d e",
+        "command": "editor.debug.action.showDebugHover",
+        "when": "vim.mode == 'Normal' && editorTextFocus && inDebugMode && debugState == 'stopped'"
+    },
+    {
+        "key": "space d c",
+        "command": "workbench.action.debug.continue",
+        "when": "vim.mode == 'Normal' && (editorTextFocus || !inputFocus) && inDebugMode && debugState == 'stopped'"
+    },
+    //Terminal
+    {
+        "key": "ctrl-n",
         "command": "workbench.action.terminal.focusNext",
         "when": "terminalFocus"
     },
     {
-        "key": "ctrl+shift+p",
+        "key": "ctrl-p",
         "command": "workbench.action.terminal.focusPrevious",
         "when": "terminalFocus"
     },
     {
-        "key": "ctrl+t",
-        "command": "workbench.action.terminal.toggleTerminal"
+        "key": "alt-t",
+        "command": "workbench.action.terminal.toggleTerminal",
+        "when": "vim.mode == 'Normal' && (editorFocus || !inputFocus || terminalFocus)"
     },
     {
-        "key": "ctrl+s",
-        "command": "workbench.action.focusActiveEditorGroup",
+        "key": "ctrl-t",
+        "command": "workbench.action.terminal.new",
         "when": "terminalFocus"
     },
     {
-        "key": "ctrl+n", 
-        "command": "workbench.action.terminal.new"
-    },
-    {
-        "key": "ctrl+q",
+        "key": "ctrl-q",
         "command": "workbench.action.terminal.kill"
     },
     {
-        "key": "ctrl+r",
+        "key": "atl-r",
         "command": "workbench.action.navigateBack",
     },
     // Comandos denegados
@@ -52,5 +302,45 @@
         "key": "ctrl+r",
         "command": "-workbench.action.reloadWindow",
         "when": "isDevelopment"
+    },
+    {
+        "key": "ctrl+k ctrl+o",
+        "command": "-workbench.action.files.openFolder",
+        "when": "openFolderWorkspaceSupport"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "-editor.action.toggleScreenReaderAccessibilityMode",
+        "when": "accessibilityHelpIsShown"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "-workbench.action.quickOpen"
+    },
+    {
+        "key": "ctrl+shift+e",
+        "command": "-workbench.view.explorer",
+        "when": "viewContainer.workbench.view.explorer.enabled"
+    },
+    {
+        "key": "alt+b",
+        "command": "workbench.action.toggleSidebarVisibility"
+    },
+    {
+        "key": "ctrl+b",
+        "command": "-workbench.action.toggleSidebarVisibility"
+    },
+    {
+        "key": "ctrl+shift+p",
+        "command": "-workbench.action.showCommands"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "-workbench.action.quickOpen"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "-workbench.action.quickOpenNavigateNextInFilePicker",
+        "when": "inFilesPicker && inQuickOpen"
     },
 ]

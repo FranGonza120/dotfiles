@@ -8,3 +8,5 @@ else
     echo "⬇ Instalando starship..."
     curl -sS https://starship.rs/install.sh | sh
 fi
+
+ln -snf "$DOTFILES_DIR/starship" "$CONFIG_DIR/starship"

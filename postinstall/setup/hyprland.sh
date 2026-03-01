@@ -9,9 +9,9 @@ else
 fi
 echo "Copiando archivos de configuración de hyrpland, mako y waybar"
 
-cp -r "$DOTFILES_DIR/hypr" "$CONFIG_DIR/" 
-cp -r "$DOTFILES_DIR/mako" "$CONFIG_DIR/" 
-cp -r "$DOTFILES_DIR/waybar" "$CONFIG_DIR/" 
-cp -r "$DOTFILES_DIR/wofi" "$CONFIG_DIR/" 
+ln -snf "$DOTFILES_DIR/hypr" "$CONFIG_DIR/hypr" 
+ln -snf "$DOTFILES_DIR/mako" "$CONFIG_DIR/mako" 
+ln -snf "$DOTFILES_DIR/waybar" "$CONFIG_DIR/waybar" 
+ln -snf "$DOTFILES_DIR/wofi" "$CONFIG_DIR/wofi" 
 
 echo "Hyprland instalado correctamente"

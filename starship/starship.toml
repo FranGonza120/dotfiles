@@ -1,0 +1,44 @@
+format = """
+[ ]()$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_metrics\
+$git_status\
+$docker_context\
+$sudo\
+$cmd_duration\
+$line_break\
+$battery\
+$status\
+[ ]()$character"""
+
+add_newline = true
+
+[directory]
+style = "bold blue"
+
+[git_branch]
+symbol = " "
+style = "bold purple"
+
+[git_status]
+style = "bold red"
+
+[docker_context]
+symbol = "🐳 "
+style = "blue"
+
+[cmd_duration]
+min_time = 500
+format = "took [$duration]($style) "
+style = "yellow"
+
+[status]
+style = "bold red"
+symbol = "✗ "
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
