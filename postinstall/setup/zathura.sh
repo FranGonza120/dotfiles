@@ -7,3 +7,5 @@ else
     sudo dnf install -y zathura zathura-pdf-poppler
     echo "zathura instalado correctamente para leer pdfs"
 fi
+
+ln -snf "$DOTFILES_DIR/zathura" "$CONFIG_DIR/zathura"

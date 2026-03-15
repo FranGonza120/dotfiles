@@ -21,7 +21,7 @@ config.enable_wayland = true
 
 -- or, changing the font size and color scheme.
 config.font = wezterm.font("JetBrainsMonoNerdFont")
-config.font_size = 13
+config.font_size = 16
 config.color_scheme = "Tokyo Night"
 
 config.tab_bar_at_bottom = true

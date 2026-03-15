@@ -29,6 +29,7 @@ vim.opt.scrolloff = 10
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+vim.keymap.set("n", "<leader>e", "<cmd>Explore<CR>", { desc = "Open Netrw" })
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -36,77 +37,13 @@ vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left wind
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+--
 
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
 	callback = function()
 		vim.highlight.on_yank()
-	end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "markdown", "markdown_inline" },
-	callback = function()
-		-- [[ Keymaps para Obsidian.nvim ]]
-		local keymap_opts = { noremap = true, silent = true, buffer = true }
-
-		vim.keymap.set("n", "<leader>on", ":ObsidianNew<CR>", { desc = "[O]bsidian [N]ew Note", unpack(keymap_opts) })
-		vim.keymap.set(
-			"n",
-			"<leader>os",
-			":ObsidianSearch<CR>",
-			{ desc = "[O]bsidian [S]earch Notes", unpack(keymap_opts) }
-		)
-		vim.keymap.set(
-			"n",
-			"<leader>of",
-			":ObsidianQuickSwitch<CR>",
-			{ desc = "[O]bsidian [F]ind Note", unpack(keymap_opts) }
-		)
-		vim.keymap.set(
-			"n",
-			"<leader>ob",
-			":ObsidianBacklinks<CR>",
-			{ desc = "[O]bsidian [B]acklinks", unpack(keymap_opts) }
-		)
-		vim.keymap.set(
-			"n",
-			"<leader>ol",
-			":ObsidianFollowLink<CR>",
-			{ desc = "[O]bsidian [L]ink Follow", unpack(keymap_opts) }
-		)
-		vim.keymap.set("n", "<leader>or", ":ObsidianRename<CR>", { desc = "[O]bsidian [R]ename", unpack(keymap_opts) })
-		vim.keymap.set(
-			"n",
-			"<leader>ot",
-			":ObsidianTemplate<CR>",
-			{ desc = "[O]bsidian [T]emplate", unpack(keymap_opts) }
-		)
-		vim.keymap.set(
-			"n",
-			"<leader>od",
-			":ObsidianToday<CR>",
-			{ desc = "[O]bsidian [D]aily Note", unpack(keymap_opts) }
-		)
-		vim.keymap.set(
-			"n",
-			"<leader>oj",
-			":ObsidianTomorrow<CR>",
-			{ desc = "[O]bsidian [J]ump to Tomorrow", unpack(keymap_opts) }
-		)
-		vim.keymap.set(
-			"n",
-			"<leader>oy",
-			":ObsidianYesterday<CR>",
-			{ desc = "[O]bsidian [Y]esterday Note", unpack(keymap_opts) }
-		)
-		vim.keymap.set(
-			"n",
-			"<leader>ow",
-			":ObsidianWorkspace<CR>",
-			{ desc = "[O]bsidian [W]orkspace Switch", unpack(keymap_opts) }
-		)
 	end,
 })
 
@@ -121,19 +58,6 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	"tpope/vim-sleuth",
-	{
-		"lewis6991/gitsigns.nvim",
-		opts = {
-			signs = {
-				add = { text = "+" },
-				change = { text = "~" },
-				delete = { text = "_" },
-				topdelete = { text = "‾" },
-				changedelete = { text = "~" },
-			},
-		},
-	},
 	{ -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
 		event = "VimEnter",
@@ -215,15 +139,13 @@ require("lazy").setup({
 			pcall(require("telescope").load_extension, "ui-select")
 
 			local builtin = require("telescope.builtin")
+			vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
+			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
+			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 			vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 			vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
-			vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
-			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
-			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
-			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
 			vim.keymap.set("n", "<leader>/", function()
@@ -510,7 +432,6 @@ require("lazy").setup({
 			},
 		},
 	},
-
 	{ -- Autocompletion
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
@@ -527,23 +448,8 @@ require("lazy").setup({
 					end
 					return "make install_jsregexp"
 				end)(),
-				dependencies = {
-					-- `friendly-snippets` contains a variety of premade snippets.
-					--    See the README about individual language/framework/plugin snippets:
-					--    https://github.com/rafamadriz/friendly-snippets
-					-- {
-					--   'rafamadriz/friendly-snippets',
-					--   config = function()
-					--     require('luasnip.loaders.from_vscode').lazy_load()
-					--   end,
-					-- },
-				},
 			},
 			"saadparwaiz1/cmp_luasnip",
-
-			-- Adds other completion capabilities.
-			--  nvim-cmp does not ship with all sources by default. They are split
-			--  into multiple repos for maintenance purposes.
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-nvim-lsp-signature-help",
@@ -610,9 +516,6 @@ require("lazy").setup({
 							luasnip.jump(-1)
 						end
 					end, { "i", "s" }),
-
-					-- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
-					--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 				}),
 				sources = {
 					{
@@ -629,11 +532,7 @@ require("lazy").setup({
 		end,
 	},
 
-	{ -- You can easily change to a different colorscheme.
-		-- Change the name of the colorscheme plugin below, and then
-		-- change the command in the config to whatever the name of that colorscheme is.
-		--
-		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+	{
 		"folke/tokyonight.nvim",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
 		config = function()
@@ -643,57 +542,9 @@ require("lazy").setup({
 					comments = { italic = false }, -- Disable italics in comments
 				},
 			})
-
-			-- Load the colorscheme here.
-			-- Like many other themes, this one has different styles, and you could load
-			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
 			vim.cmd.colorscheme("tokyonight-moon")
 			vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-		end,
-	},
-	{
-		"folke/todo-comments.nvim",
-		event = "VimEnter",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		opts = { signs = false },
-	},
-
-	{ -- Collection of various small independent plugins/modules
-		"echasnovski/mini.nvim",
-		config = function()
-			-- Better Around/Inside textobjects
-			--
-			-- Examples:
-			--  - va)  - [V]isually select [A]round [)]paren
-			--  - yinq - [Y]ank [I]nside [N]ext [Q]uote
-			--  - ci'  - [C]hange [I]nside [']quote
-			require("mini.ai").setup({ n_lines = 500 })
-
-			-- Add/delete/replace surroundings (brackets, quotes, etc.)
-			--
-			-- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-			-- - sd'   - [S]urround [D]elete [']quotes
-			-- - sr)'  - [S]urround [R]eplace [)] [']
-			require("mini.surround").setup()
-
-			-- Simple and easy statusline.
-			--  You could remove this setup call if you don't like it,
-			--  and try some other statusline plugin
-			local statusline = require("mini.statusline")
-			-- set use_icons to true if you have a Nerd Font
-			statusline.setup({ use_icons = vim.g.have_nerd_font })
-
-			-- You can configure sections in the statusline by overriding their
-			-- default behavior. For example, here we set the section for
-			-- cursor location to LINE:COLUMN
-			---@diagnostic disable-next-line: duplicate-set-field
-			statusline.section_location = function()
-				return "%2l:%-2v"
-			end
-
-			-- ... and there is more!
-			--  Check out: https://github.com/echasnovski/mini.nvim
 		end,
 	},
 	{ -- Highlight, edit, and navigate code
@@ -704,7 +555,6 @@ require("lazy").setup({
 		opts = {
 			ensure_installed = {
 				"bash",
-				"c",
 				"diff",
 				"html",
 				"lua",
@@ -734,145 +584,8 @@ require("lazy").setup({
 		--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 	},
 	{
-		"folke/zen-mode.nvim",
-		opts = {
-			-- Aquí puedes agregar configuraciones personalizadas para Zen Mode
-		},
-	},
-	{
-		"glacambre/firenvim",
-		build = ":call firenvim#install(0)",
-	},
-	{
-		"epwalsh/obsidian.nvim",
-		version = "*", -- recommended, use latest release instead of latest commit
-		lazy = true,
-		ft = "markdown, markdown_inline",
-		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-		-- event = {
-		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
-		--   -- refer to `:h file-pattern` for more examples
-		--   "BufReadPre path/to/my-vault/*.md",
-		--   "BufNewFile path/to/my-vault/*.md",
-		-- },
-		dependencies = {
-			-- Required.
-			"nvim-lua/plenary.nvim",
-			-- see below for full list of optional dependencies 👇
-		},
-		opts = {
-			workspaces = {
-				{
-					name = "personal",
-					path = "~/Escritorio/2.Areas/SegundoCerebro",
-				},
-			},
-			completion = {
-				-- Set to false to disable completion.
-				nvim_cmp = true,
-				-- Trigger completion at 2 chars.
-				min_chars = 2,
-			},
-			templates = {
-				folder = "3.Recursos/Templates",
-				date_format = "%d-%m-%Y",
-				time_format = "%H:%M",
-				-- A map for custom variables, the key should be the variable and the value a function
-				substitutions = {},
-			},
-			mappings = {
-				-- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
-				["gf"] = {
-					action = function()
-						return require("obsidian").util.gf_passthrough()
-					end,
-					opts = { noremap = false, expr = true, buffer = true },
-				},
-				-- Toggle check-boxes.
-				["<leader>ch"] = {
-					action = function()
-						return require("obsidian").util.toggle_checkbox()
-					end,
-					opts = { buffer = true },
-				},
-				-- Smart action depending on context, either follow link or toggle checkbox.
-				["<cr>"] = {
-					action = function()
-						return require("obsidian").util.smart_action()
-					end,
-					opts = { buffer = true, expr = true },
-				},
-			},
-
-			-- Generación del nombre del archivo
-			---@param spec { id: string, dir: obsidian.Path, title: string|? }
-			---@return string|obsidian.Path
-			note_path_func = function(spec)
-				local filename
-				if spec.title and spec.title ~= "" then
-					-- Si hay título, usarlo como nombre de archivo
-					filename = spec.title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
-				else
-					-- Si no hay título, usar el ID generado con la fecha sin espacios
-					filename = spec.id
-				end
-				return (spec.dir / filename):with_suffix(".md")
-			end,
-			note_frontmatter_func = function(note)
-				return nil
-			end,
-			disable_frontmatter = true,
-			ui = {
-				enable = true, -- set to false to disable all additional syntax features
-				update_debounce = 200, -- update delay after a text change (in milliseconds)
-				-- Define how various check-boxes are displayed
-				checkboxes = {
-					-- NOTE: the 'char' value has to be a single character, and the highlight groups are defined below.
-					[" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
-					["x"] = { char = "", hl_group = "ObsidianDone" },
-					[">"] = { char = "", hl_group = "ObsidianRightArrow" },
-					["~"] = { char = "󰰱", hl_group = "ObsidianTilde" },
-					["!"] = { char = "", hl_group = "ObsidianImportant" },
-					-- Replace the above with this if you don't have a patched font:
-					-- [" "] = { char = "☐", hl_group = "ObsidianTodo" },
-					-- ["x"] = { char = "✔", hl_group = "ObsidianDone" },
-
-					-- You can also add more custom ones...
-				},
-				-- Use bullet marks for non-checkbox lists.
-				bullets = { char = "•", hl_group = "ObsidianBullet" },
-				external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
-				-- Replace the above with this if you don't have a patched font:
-				-- external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
-				reference_text = { hl_group = "ObsidianRefText" },
-				highlight_text = { hl_group = "ObsidianHighlightText" },
-				tags = { hl_group = "ObsidianTag" },
-				block_ids = { hl_group = "ObsidianBlockID" },
-				hl_groups = {
-					-- The options are passed directly to `vim.api.nvim_set_hl()`. See `:help nvim_set_hl`.
-					ObsidianTodo = { bold = true, fg = "#f78c6c" },
-					ObsidianDone = { bold = true, fg = "#89ddff" },
-					ObsidianRightArrow = { bold = true, fg = "#f78c6c" },
-					ObsidianTilde = { bold = true, fg = "#ff5370" },
-					ObsidianImportant = { bold = true, fg = "#d73128" },
-					ObsidianBullet = { bold = true, fg = "#89ddff" },
-					ObsidianRefText = { underline = true, fg = "#c792ea" },
-					ObsidianExtLinkIcon = { fg = "#c792ea" },
-					ObsidianTag = { italic = true, fg = "#89ddff" },
-					ObsidianBlockID = { italic = true, fg = "#89ddff" },
-					ObsidianHighlightText = { bg = "#75662e" },
-				},
-			},
-			-- see below for full list of options 👇
-		},
-	},
-	{
 		"saghen/blink.cmp",
-		-- optional: provides snippets for the snippet source
 		dependencies = { "rafamadriz/friendly-snippets" },
-
-		-- use a release tag to download pre-built binaries
 		version = "1.*",
 		-- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
 		-- build = 'cargo build --release',
@@ -958,8 +671,8 @@ require("lazy").setup({
 				complete_payee_narration = true, -- Include payees/narrations
 
 				-- Files & paths
-				main_bean_file = "/home/frangonza120/Escritorio/3.Recursos/Finanzas/cordoba-univ.beancount", -- Path to main beancount file
-				python_path = "/home/frangonza120/Escritorio/3.Recursos/Finanzas/beancount-venv/bin/python3", -- Python executable path
+				main_bean_file = "/home/frangonza120/Escritorio/2.Areas/Finanzas/cordoba-univ.beancount", -- Path to main beancount file
+				python_path = "/home/frangonza120/Escritorio/2.Areas/Finanzas/beancount-venv/bin/python3", -- Python executable path
 
 				-- Diagnostics & warnings
 				flag_warnings = { -- Transaction flag warning levels
@@ -1004,20 +717,6 @@ require("lazy").setup({
 			})
 		end,
 	},
-	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
-	-- init.lua. If you want these files, they are in the repository, so you can just download them and
-	-- place them in the correct locations.
-
-	-- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-	--    This is the easiest way to modularize your config.
-	--
-	--  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-	-- { import = 'custom.plugins' },
-	--
-	-- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
-	-- Or use telescope!
-	-- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
-	-- you can continue same window with `<space>sr` which resumes last telescope search
 }, {
 	ui = {
 		-- If you are using a Nerd Font: set icons to an empty table which will use the

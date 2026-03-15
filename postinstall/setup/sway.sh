@@ -7,7 +7,7 @@ sudo dnf install swayfx
 echo "Instalando mako wofi waybar y otras utilidades para swayfx"
 sudo dnf install mako wofi waybar brightnessctl grim wl-clipboard network-manager-applet blueman-applet unzip unrar
 
-echo "Copiando archvos de configuración de sway, mako y waybar"
+echo "Creando links para carpetas de configuración de sway, mako y waybar"
 ln -snf "$DOTFILES_DIR/sway" "$CONFIG_DIR/sway"
 ln -snf "$DOTFILES_DIR/mako" "$CONFIG_DIR/mako" 
 ln -snf "$DOTFILES_DIR/waybar" "$CONFIG_DIR/waybar" 

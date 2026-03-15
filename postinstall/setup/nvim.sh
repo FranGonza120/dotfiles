@@ -7,7 +7,7 @@ else
     sudo dnf install -y nvim
 fi
 
-echo "Copiando dotfiles de nvim"
+echo "Creando link para carpeta de configuracion de nvim"
 ln -snf "$DOTFILES_DIR/nvim" "$CONFIG_DIR/nvim"
 
 echo "nvim configurado correctamente"

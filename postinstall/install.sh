@@ -23,7 +23,6 @@ function scripts_a_ejecutar() {
 		flatpaks
 		gtk-apps
 		nvim
-		wofi
 		zathura
 		syncthing
 		nextdns
@@ -61,7 +60,6 @@ function instalacion() {
 	# Exportando variables para los scripts hijos
 	export DOTFILES_DIR CONFIG_DIR PARTICION_DIR POSTINSTALL_DIR
 	for arg in "$@"; do
-		echo "$arg"
 		bash "$POSTINSTALL_DIR/setup/$arg.sh"
 	done
 }

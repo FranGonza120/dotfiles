@@ -7,7 +7,7 @@ else
     sudo dnf install -y hyprland hyprpaper hyprpolkitagent hyprland-qtutils xdg-desktop-portal xdg-desktop-portal-hyprland
     sudo dnf install -y blueman-applet mako waybar wofi fd brightnessctl grim wl-clipboard network-manager-applet unzip unrar
 fi
-echo "Copiando archivos de configuración de hyrpland, mako y waybar"
+echo "Creando links para carpetas de configuración de hyrpland, mako y waybar"
 
 ln -snf "$DOTFILES_DIR/hypr" "$CONFIG_DIR/hypr" 
 ln -snf "$DOTFILES_DIR/mako" "$CONFIG_DIR/mako" 
