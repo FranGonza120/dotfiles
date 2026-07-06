@@ -2,8 +2,7 @@
 
 
 echo "Instalando swayfx"
-sudo dnf copr enable swayfx/swayfx 
-sudo dnf install swayfx
+sudo dnf install sway
 echo "Instalando otras utilidades para sway"
 sudo dnf install brightnessctl grim wl-clipboard network-manager-applet blueman-applet unzip unrar
 
