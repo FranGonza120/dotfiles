@@ -58,8 +58,6 @@ Scope {
         source: "../launcher/LauncherWindow.qml"
         asynchronous: true
 
-        property var launcher: item
-
         onStatusChanged: {
             if (status === Loader.Ready)
                 item.launcherMode = "apps"
@@ -86,22 +84,6 @@ Scope {
             if (status === Loader.Ready)
                 item.launcherMode = "wallpapers"
         }
-    }
-
-    Loader {
-        id: sidebarLoader
-        source: "../sidebar/SidebarWindow.qml"
-        asynchronous: true
-
-        property var sidebar: item
-    }
-
-    Loader {
-        id: dashboardLoader
-        source: "../dashboard/DashboardWindow.qml"
-        asynchronous: true
-
-        property var dashboard: item
     }
 
     FileView {
@@ -152,11 +134,7 @@ Scope {
                 onStatusChanged: {
                     if (status === Loader.Ready) {
                         item.screen = Qt.binding(() => modelData)
-                        item.barWindow = Qt.binding(() => window)
                         item.controlCenter = Qt.binding(() => controlCenterLoader.item)
-                        item.launcher = Qt.binding(() => appLauncherLoader.item)
-                        item.sidebar = Qt.binding(() => sidebarLoader.item)
-                        item.dashboard = Qt.binding(() => dashboardLoader.item)
                     }
                 }
             }

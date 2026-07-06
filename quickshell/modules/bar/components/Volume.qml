@@ -7,8 +7,11 @@ import "../../../components/effects"
 // Volume indicator with number - no popup
 Item {
     id: root
-    
-    property var barWindow
+    readonly property var audioManagerCommand: [
+        "/bin/sh",
+        "-c",
+        "if command -v pavucontrol >/dev/null 2>&1; then exec pavucontrol; fi; if command -v pwvucontrol >/dev/null 2>&1; then exec pwvucontrol; fi; if command -v helvum >/dev/null 2>&1; then exec helvum; fi"
+    ]
     
     readonly property var pywal: QsServices.Pywal
     readonly property var audio: QsServices.Audio
@@ -99,6 +102,7 @@ Item {
         anchors.margins: -5
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
+        acceptedButtons: Qt.LeftButton | Qt.MiddleButton
         
         onWheel: wheel => {
             if (wheel.angleDelta.y > 0) {
@@ -107,8 +111,16 @@ Item {
                 audio.decreaseVolume()
             }
         }
-        
-        onClicked: audio.toggleMute()
+
+        onClicked: mouse => {
+            if (mouse.button === Qt.MiddleButton) {
+                audio.toggleMute()
+                return
+            }
+
+            if (mouse.button === Qt.LeftButton)
+                Quickshell.execDetached(root.audioManagerCommand)
+        }
     }
     
     // Volume change pulse

@@ -13,7 +13,6 @@ Item {
     implicitHeight: 32
     
     readonly property var battery: UPower.displayDevice
-    readonly property var powerProfiles: QsServices.PowerProfiles
     readonly property var pywal: QsServices.Pywal
     readonly property real percentage: battery?.percentage ?? 0
     readonly property int batteryLevel: Math.round(percentage * 100)

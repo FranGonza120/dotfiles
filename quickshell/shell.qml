@@ -16,9 +16,6 @@ ShellRoot {
     // Initialize services immediately
     readonly property var notifs: QsServices.Notifs
     readonly property var pywal: QsServices.Pywal
-    readonly property var audio: QsServices.Audio
-    readonly property var brightness: QsServices.Brightness
-    readonly property var gamingMode: QsServices.GamingMode
     
     // Only register as a notification daemon if explicitly enabled.
     // This avoids noisy warnings when another daemon is active.
@@ -56,46 +53,7 @@ ShellRoot {
         pywal: root.pywal
     }
 
-    property bool focusModePreviousDnd: false
-
     BatteryMonitor {}
-
-    Timer {
-        interval: 60000
-        running: QsServices.Settings.focusModeEnabled
-        repeat: true
-        onTriggered: {
-            if (QsServices.Settings.focusModeMinutesLeft > 0) {
-                QsServices.Settings.focusModeMinutesLeft--
-            }
-            if (QsServices.Settings.focusModeMinutesLeft <= 0) {
-                QsServices.Settings.focusModeEnabled = false
-            }
-        }
-    }
-
-    Connections {
-        target: notifs
-        function onDndChanged() {
-            if (!notifs.dnd && QsServices.Settings.focusModeEnabled) {
-                QsServices.Settings.focusModeEnabled = false
-            }
-        }
-    }
-
-    Connections {
-        target: QsServices.Settings
-        function onFocusModeEnabledChanged() {
-            if (QsServices.Settings.focusModeEnabled) {
-                // Save previous DND state when enabling
-                root.focusModePreviousDnd = notifs.dnd
-            } else {
-                // Restore DND only if focus mode's state wasn't manually overridden
-                if (notifs.dnd === true)
-                    notifs.dnd = root.focusModePreviousDnd
-            }
-        }
-    }
 
     Component.onCompleted: {
         QsServices.Logger.info("Shell", "Loaded")

@@ -75,14 +75,6 @@ PanelWindow {
             onTriggered: () => Quickshell.execDetached(["xdg-open", Quickshell.env("HOME")])
         },
         {
-            id: "action-screenshots",
-            name: "Open Captures",
-            comment: "Browse screenshots and recordings",
-            glyph: "󰄄",
-            type: "action",
-            onTriggered: () => QsServices.Screenshot.openScreenshotsFolder()
-        },
-        {
             id: "action-network",
             name: "Network Settings",
             comment: "Open nm-connection-editor",
@@ -318,6 +310,23 @@ PanelWindow {
         }
         const next = selectedIndex + (step * wallpaperColumns)
         selectedIndex = Math.max(0, Math.min(next, visibleEntries.length - 1))
+        ensureWallpaperSelectionVisible()
+    }
+
+    function ensureWallpaperSelectionVisible() {
+        if (launcherMode !== "wallpapers" || !resultsFlick || !wallpaperGrid || wallpaperGrid.tileHeight <= 0)
+            return
+
+        const row = Math.floor(selectedIndex / wallpaperColumns)
+        const rowTop = row * (wallpaperGrid.tileHeight + wallpaperGrid.rowSpacing)
+        const rowBottom = rowTop + wallpaperGrid.tileHeight
+        const viewTop = resultsFlick.contentY
+        const viewBottom = viewTop + resultsFlick.height
+
+        if (rowBottom > viewBottom)
+            resultsFlick.contentY = Math.min(rowBottom - resultsFlick.height, Math.max(0, resultsFlick.contentHeight - resultsFlick.height))
+        else if (rowTop < viewTop)
+            resultsFlick.contentY = Math.max(0, rowTop)
     }
 
     function handleMoveDown() {
@@ -531,14 +540,7 @@ PanelWindow {
                         comment: "Set wallpaper",
                         glyph: "󰸉",
                         type: "wallpaper",
-                        onTriggered: () => Quickshell.execDetached([
-                            "/bin/sh",
-                            "-c",
-                            "\"$1\" \"$2\" && wal -nstqi \"$2\"",
-                            "sh",
-                            root.wallpaperSetter,
-                            item.path
-                        ])
+                        onTriggered: () => Quickshell.execDetached([root.wallpaperSetter, item.path])
                     }))
             }
         }
@@ -737,6 +739,7 @@ PanelWindow {
                 }
 
                 Flickable {
+                    id: resultsFlick
                     Layout.fillWidth: true
                     Layout.preferredHeight: root.launcherMode === "wallpapers"
                         ? Math.min(560, wallpaperGrid.implicitHeight + 12)
@@ -748,6 +751,7 @@ PanelWindow {
 
                     QQC.ScrollBar.vertical: QQC.ScrollBar {
                         policy: QQC.ScrollBar.AsNeeded
+                        visible: root.launcherMode !== "wallpapers"
                     }
 
                     Column {
@@ -763,29 +767,31 @@ PanelWindow {
                                 id: delegateRoot
                                 required property var modelData
                                 required property int index
+                                readonly property bool isSelected: root.selectedIndex === index
+                                readonly property bool isHovered: hovered.hovered && !isSelected
 
                                 width: listColumn.width
                                 height: 66
                                 radius: 20
-                                color: root.selectedIndex === index
+                                color: isSelected
                                     ? Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, 0.18)
-                                    : hovered.hovered
+                                    : isHovered
                                         ? root.cSurfaceContainerHigh
                                         : root.cSurfaceContainer
-                                border.width: 1
-                                border.color: root.selectedIndex === index
-                                    ? Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, 0.34)
-                                    : Qt.rgba(root.cText.r, root.cText.g, root.cText.b, 0.10)
-                                scale: hovered.hovered ? 1.02 : 1.0
+                                border.width: isSelected ? 2 : 1
+                                border.color: isSelected
+                                    ? Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, 0.62)
+                                    : isHovered
+                                        ? Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, 0.18)
+                                        : Qt.rgba(root.cText.r, root.cText.g, root.cText.b, 0.10)
+                                scale: isHovered ? 1.01 : 1.0
 
-                                Behavior on color { ColorAnimation { duration: 60 } }
-                                Behavior on border.color { ColorAnimation { duration: 60 } }
                                 Behavior on scale { NumberAnimation { duration: 80; easing.bezierCurve: [0.22, 1.0, 0.36, 1.0] } }
 
                                 Rectangle {
                                     anchors.fill: parent
                                     radius: parent.radius
-                                    color: Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, root.selectedIndex === index ? 0.05 : hovered.hovered ? 0.03 : 0)
+                                    color: Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, isSelected ? 0.08 : isHovered ? 0.03 : 0)
                                 }
 
                                 HoverHandler { id: hovered }
@@ -840,7 +846,7 @@ PanelWindow {
                                     }
 
                                     Text {
-                                        visible: root.selectedIndex === index
+                                        visible: delegateRoot.isSelected
                                         text: "󰁔"
                                         font.family: "Material Design Icons"
                                         font.pixelSize: 18
@@ -862,10 +868,12 @@ PanelWindow {
                     GridLayout {
                         id: wallpaperGrid
                         visible: root.launcherMode === "wallpapers"
-                        width: root.width - 48
+                        width: resultsFlick.width
                         columns: root.wallpaperColumns
                         columnSpacing: 10
                         rowSpacing: 10
+                        readonly property real tileWidth: Math.floor((width - ((root.wallpaperColumns - 1) * columnSpacing)) / root.wallpaperColumns)
+                        readonly property real tileHeight: Math.round(tileWidth * 0.62)
 
                         Repeater {
                             model: root.visibleEntries
@@ -874,18 +882,21 @@ PanelWindow {
                                 id: wallpaperTile
                                 required property var modelData
                                 required property int index
+                                readonly property bool isSelected: root.selectedIndex === index
+                                readonly property bool isHovered: wallpaperHover.hovered && !isSelected
 
-                                readonly property real tileWidth: Math.floor((wallpaperGrid.width - ((root.wallpaperColumns - 1) * wallpaperGrid.columnSpacing)) / root.wallpaperColumns)
-                                Layout.preferredWidth: tileWidth
-                                Layout.preferredHeight: Math.round(tileWidth * 0.62)
+                                Layout.preferredWidth: wallpaperGrid.tileWidth
+                                Layout.preferredHeight: wallpaperGrid.tileHeight
                                 radius: 18
                                 clip: true
                                 color: root.cSurfaceContainer
-                                border.width: root.selectedIndex === index ? 2 : 1
-                                border.color: root.selectedIndex === index
+                                border.width: isSelected ? 3 : 1
+                                border.color: isSelected
                                     ? Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, 0.9)
+                                    : isHovered
+                                        ? Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, 0.28)
                                     : Qt.rgba(root.cText.r, root.cText.g, root.cText.b, 0.12)
-                                scale: wallpaperHover.hovered ? 1.02 : 1.0
+                                scale: isSelected ? 1.03 : isHovered ? 1.01 : 1.0
 
                                 Behavior on border.color { ColorAnimation { duration: 160 } }
                                 Behavior on scale { NumberAnimation { duration: 160 } }
@@ -900,18 +911,28 @@ PanelWindow {
 
                                 Rectangle {
                                     anchors.fill: parent
-                                    color: Qt.rgba(0, 0, 0, root.selectedIndex === index ? 0.10 : wallpaperHover.hovered ? 0.06 : 0.18)
+                                    color: Qt.rgba(0, 0, 0, isSelected ? 0.03 : isHovered ? 0.06 : 0.18)
                                 }
 
-                                Text {
+                                Rectangle {
+                                    visible: wallpaperTile.isSelected
                                     anchors.right: parent.right
                                     anchors.bottom: parent.bottom
                                     anchors.margins: 10
-                                    visible: root.selectedIndex === index
-                                    text: "󰁔"
-                                    font.family: "Material Design Icons"
-                                    font.pixelSize: 18
-                                    color: root.cPrimary
+                                    width: 30
+                                    height: 30
+                                    radius: 15
+                                    color: Qt.rgba(root.cSurface.r, root.cSurface.g, root.cSurface.b, 0.86)
+                                    border.width: 1
+                                    border.color: Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, 0.75)
+
+                                    Text {
+                                        anchors.centerIn: parent
+                                        text: "󰄬"
+                                        font.family: "Material Design Icons"
+                                        font.pixelSize: 18
+                                        color: root.cPrimary
+                                    }
                                 }
 
                                 HoverHandler { id: wallpaperHover }

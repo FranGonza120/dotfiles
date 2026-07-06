@@ -30,32 +30,36 @@ CORE_PACKAGES=(
     qt6-qtsvg
     qt6-qtwayland
     sway
+    swaybg
+    swayidle
+    swaylock
     pipewire
     wireplumber
     NetworkManager
+    NetworkManager-applet
     bluez
     upower
-    power-profiles-daemon
     grim
     slurp
     brightnessctl
     playerctl
     wl-clipboard
-    wf-recorder
-    libnotify
+    fd-find
     xdg-utils
+    xdg-desktop-portal
+    xdg-desktop-portal-wlr
     procps-ng
     util-linux
+    alacritty
     foot
+    python3-pywal
+    blueman
+    google-material-design-icons-fonts
 )
 
 OPTIONAL_PACKAGES=(
-    python3-pywal
-    blueman
     nm-connection-editor
-    wlogout
-    google-inter-fonts
-    google-material-design-icons-fonts
+    capitaine-cursors-theme
 )
 
 install_group() {
@@ -84,8 +88,34 @@ install_group() {
 install_group core "${CORE_PACKAGES[@]}"
 install_group optional "${OPTIONAL_PACKAGES[@]}"
 
+install_first_available() {
+    local label="$1"
+    shift
+
+    local pkg
+    for pkg in "$@"; do
+        if rpm -q "$pkg" >/dev/null 2>&1; then
+            ok "$label already installed via $pkg."
+            return 0
+        fi
+
+        if dnf info "$pkg" >/dev/null 2>&1 && "${DNF[@]}" "$pkg"; then
+            ok "Installed $label via $pkg."
+            return 0
+        fi
+    done
+
+    warn "Could not install $label automatically."
+    return 1
+}
+
+install_first_available "JetBrains Mono Nerd Font" \
+    jetbrains-mono-nerd-fonts \
+    nerd-fonts-jetbrains-mono \
+    jetbrainsmono-nerd-fonts
+
 log "Enabling useful system services..."
-for service in NetworkManager bluetooth power-profiles-daemon; do
+for service in NetworkManager bluetooth; do
     if systemctl list-unit-files "${service}.service" >/dev/null 2>&1; then
         sudo systemctl enable --now "${service}.service" || warn "Could not enable ${service}.service"
     fi
@@ -108,11 +138,23 @@ else
     warn "wal was not found. Install pywal manually if python3-pywal was unavailable."
 fi
 
+if command -v fc-match >/dev/null 2>&1; then
+    if fc-match "JetBrainsMono Nerd Font" | grep -qi "JetBrains"; then
+        ok "JetBrains Mono Nerd Font found."
+    else
+        warn "JetBrains Mono Nerd Font not found. Install it manually if the auto step above failed."
+    fi
+fi
+
 cat <<'EOF'
 
 Fedora Sway notes:
-- To autostart, add this to ~/.config/sway/config:
-    exec quickshell
+- This repo currently expects:
+  - JetBrains Mono Nerd Font
+  - Material Design Icons
+  - nm-applet and blueman-applet
+  - swaybg, swayidle, swaylock, fd, playerctl
+- QuickShell itself is not installed by this script.
 
 Done.
 EOF

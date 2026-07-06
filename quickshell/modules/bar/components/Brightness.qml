@@ -1,14 +1,11 @@
 import QtQuick 6.10
 import QtQuick.Layouts 6.10
-import Quickshell
 import "../../../services" as QsServices
 import "../../../components/effects"
 
 // Brightness indicator with number - no popup
 Item {
     id: root
-    
-    property var barWindow
     
     readonly property var pywal: QsServices.Pywal
     readonly property var brightness: QsServices.Brightness

@@ -1,15 +1,8 @@
 import QtQuick 6.10
-import QtQuick.Layouts 6.10
 import qs.services
-import "../../../components/effects"
 
 Item {
     id: root
-
-    property var launcher
-    property var controlCenter
-    property var sidebar
-    property var dashboard
     
     implicitWidth: clockRow.implicitWidth
     implicitHeight: clockRow.implicitHeight
@@ -75,32 +68,6 @@ Item {
             font.pixelSize: 16
             font.weight: Font.Medium
             font.family: "JetBrainsMono Nerd Font"
-        }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        anchors.margins: -8
-        hoverEnabled: true
-        cursorShape: Qt.PointingHandCursor
-        acceptedButtons: Qt.RightButton
-
-        onClicked: mouse => {
-            if (mouse.button === Qt.RightButton) {
-                if (!root.dashboard)
-                    return
-
-                root.dashboard.shouldShow = !root.dashboard.shouldShow
-                if (root.dashboard.shouldShow) {
-                    if (root.launcher)
-                        root.launcher.shouldShow = false
-                    if (root.controlCenter)
-                        root.controlCenter.shouldShow = false
-                    if (root.sidebar)
-                        root.sidebar.shouldShow = false
-                }
-                return
-            }
         }
     }
 }

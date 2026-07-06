@@ -1,7 +1,5 @@
 import QtQuick 6.10
 import QtQuick.Layouts 6.10
-import Quickshell
-import Quickshell.Io
 import qs.services
 import "../../../components"
 import "../../../components/effects"
@@ -10,8 +8,6 @@ import "../../../components/effects"
 Item {
     id: root
     
-    property var barWindow
-    property var mediaPopup
     property bool dockMode: false
 
     readonly property int rowHeight: root.dockMode ? 64 : 22
@@ -20,8 +16,6 @@ Item {
     readonly property int vinylSize: root.dockMode ? 44 : 16
     readonly property int controlSize: root.dockMode ? 44 : 20
     readonly property int playSize: root.dockMode ? 52 : 24
-    readonly property int progressWidth: root.dockMode ? 48 : 35
-    readonly property int progressHeight: root.dockMode ? 8 : 4
     readonly property int titleFontSize: root.dockMode ? 18 : 16
     readonly property int iconFontSize: root.dockMode ? 25 : 16
     readonly property int playIconFontSize: root.dockMode ? 28 : 16
@@ -35,51 +29,11 @@ Item {
     readonly property var player: Players.active
     readonly property bool hasPlayer: player !== null
     readonly property bool isPlaying: player?.isPlaying ?? false
-    property real progress: 0
-    property real duration: player?.length ?? 1
-    property real progressPercent: duration > 0 ? progress / duration : 0
     
     property bool isHovered: contentMouse.containsMouse || noMediaMouse.containsMouse
-    
-    // Poll position via playerctl for live progress updates
-    Timer {
-        interval: 1000
-        running: hasPlayer && isPlaying
-        repeat: true
-        onTriggered: posPollProc.running = true
-    }
-    
-    Process {
-        id: posPollProc
-        command: ["playerctl", "position"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                var val = parseFloat(text.trim())
-                if (!isNaN(val) && val >= 0)
-                    root.progress = val * 1000000  // playerctl returns seconds, convert to microseconds
-            }
-        }
-    }
-    
-    Process {
-        id: lenPollProc
-        command: ["playerctl", "metadata", "mpris:length"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                var val = parseFloat(text.trim())
-                if (!isNaN(val) && val > 0)
-                    root.duration = val  // mpris:length is in microseconds
-            }
-        }
-    }
-    
-    onPlayerChanged: lenPollProc.running = true
-    
+
     onIsPlayingChanged: {
-        if (isPlaying) {
-            posPollProc.running = true
-            lenPollProc.running = true
-        } else {
+        if (!isPlaying) {
             marqueeAnim.stop()
             titleText.x = titleText.needsScroll ? 0 : (root.titleWidth - titleText.implicitWidth) / 2
         }
@@ -124,8 +78,9 @@ Item {
     
     RowLayout {
         id: contentRow
-        anchors.centerIn: parent
-        spacing: root.dockMode ? 7 : 6
+        anchors.fill: parent
+        anchors.margins: root.dockMode ? 6 : 0
+        spacing: root.dockMode ? 10 : 6
         visible: hasPlayer
         opacity: hasPlayer ? 1 : 0
         
@@ -209,6 +164,7 @@ Item {
         
         // Track Title - Marquee with proper reset
         Item {
+            Layout.fillWidth: true
             Layout.preferredWidth: root.titleWidth
             Layout.preferredHeight: parent.height
             Layout.alignment: Qt.AlignVCenter
@@ -226,6 +182,7 @@ Item {
                 
                 text: root.player?.trackTitle ?? "Unknown"
                 color: Pywal.foreground
+                font.family: "JetBrainsMono Nerd Font"
                 font.pixelSize: root.titleFontSize
                 font.weight: Font.Medium
                 
@@ -265,15 +222,6 @@ Item {
                     }
                 }
             }
-        }
-        
-        // Stylish divider
-        Rectangle {
-            Layout.preferredWidth: 1
-            Layout.preferredHeight: root.dockMode ? 36 : 12
-            Layout.alignment: Qt.AlignVCenter
-            radius: 0.5
-            color: Qt.rgba(Pywal.foreground.r, Pywal.foreground.g, Pywal.foreground.b, 0.18)
         }
         
         // Controls - Fixed with proper click handling
@@ -388,50 +336,6 @@ Item {
                     
                     onClicked: {
                         Players.next()
-                    }
-                }
-            }
-        }
-        
-        // Beautiful progress bar
-        Item {
-            Layout.preferredWidth: root.progressWidth
-            Layout.preferredHeight: root.progressHeight
-            Layout.alignment: Qt.AlignVCenter
-            
-            Rectangle {
-                anchors.fill: parent
-                radius: root.progressHeight / 2
-                color: Qt.rgba(Pywal.foreground.r, Pywal.foreground.g, Pywal.foreground.b, 0.12)
-                
-                Rectangle {
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    width: parent.width * root.progressPercent
-                    radius: root.progressHeight / 2
-                    color: Pywal.primary
-                    
-                    Behavior on width {
-                        NumberAnimation { duration: 200 }
-                    }
-                    
-                    // Playhead dot
-                    Rectangle {
-                        visible: root.isPlaying
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: root.dockMode ? 12 : 6
-                        height: width
-                        radius: width / 2
-                        color: Pywal.onPrimary
-                        
-                        SequentialAnimation on scale {
-                            running: root.isPlaying
-                            loops: Animation.Infinite
-                            NumberAnimation { to: 1.2; duration: 600 }
-                            NumberAnimation { to: 1.0; duration: 600 }
-                        }
                     }
                 }
             }

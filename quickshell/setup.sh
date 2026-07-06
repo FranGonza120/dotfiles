@@ -36,7 +36,6 @@ if command -v pacman &> /dev/null; then
         "ttf-jetbrains-mono-nerd"
         "qt6-quickeffects"
         "wl-clipboard"
-        "wf-recorder"
         "libnotify"
     )
 

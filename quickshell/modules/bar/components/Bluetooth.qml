@@ -1,6 +1,5 @@
 import QtQuick 6.10
 import QtQuick.Layouts 6.10
-import Quickshell
 import Quickshell.Bluetooth
 import "../../../services" as QsServices
 
@@ -8,7 +7,6 @@ import "../../../services" as QsServices
 Item {
     id: root
     
-    property var barWindow
     property var bar  // Reference to Bar.qml root for inline popup toggle
     
     readonly property var pywal: QsServices.Pywal

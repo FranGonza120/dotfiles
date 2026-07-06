@@ -22,7 +22,6 @@ PanelWindow {
     readonly property int iconSlotWidth: 36
     readonly property int sideSlotWidth: 42
 
-    readonly property var appearance: QsConfig.AppearanceConfig
     readonly property var config: QsConfig.Config
 
     visible: showing

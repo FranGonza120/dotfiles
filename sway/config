@@ -37,7 +37,7 @@ set $ws6 "6 "
 set $ws7 "7 "
 
 # Asignar aplicaciones a workspaces
-assign [app_id="org.wezfurlong.wezterm"] $ws1
+assign [app_id="Alacritty"] $ws1
 assign [app_id="thunar"] $ws1
 assign [class="obsidian"] $ws2
 assign [app_id="okular"] $ws4

@@ -153,6 +153,9 @@ PanelWindow {
                     Layout.fillHeight: true
                     contentHeight: contentColumn.height
                     clip: true
+                    interactive: true
+                    showScrollBar: false
+                    boundsBehavior: Flickable.StopAtBounds
 
                     ColumnLayout {
                         id: contentColumn

@@ -1,13 +1,11 @@
 import QtQuick 6.10
 import QtQuick.Layouts 6.10
-import Quickshell
 import "../../../services" as QsServices
 
 // Clean Network indicator - No shadows, proper alignment
 Item {
     id: root
     
-    property var barWindow
     property var bar  // Reference to Bar.qml root for inline popup toggle
     
     readonly property var pywal: QsServices.Pywal

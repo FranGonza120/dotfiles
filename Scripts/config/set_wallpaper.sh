@@ -16,7 +16,11 @@ touch "$CONFIG_FILE"
 echo "exec_always swaybg -i \"$WALLPAPER\" -m fill"
 echo "exec_always swaybg -i \"$WALLPAPER\" -m fill" > "$CONFIG_FILE"
 
+if command -v wal >/dev/null 2>&1; then
+  wal -nstqi "$WALLPAPER"
+fi
+
 # Recargar sway
-killall swaybg
-swaymsg reload
+killall swaybg 2>/dev/null || true
+swaymsg reload >/dev/null
 echo "✅ Wallpaper actualizado: $WALLPAPER"

@@ -1,10 +1,6 @@
-import Quickshell
 import QtQuick 6.10
 import QtQuick.Layouts 6.10
-import QtQuick.Effects
-import "components" as BarComponents
 import "../../components"
-import "../../components/effects"
 import "../../config" as QsConfig
 import "../../services" as QsServices
 
@@ -12,11 +8,7 @@ Item {
     id: root
     
     property var screen
-    property var barWindow
     property var controlCenter
-    property var launcher
-    property var sidebar
-    property var dashboard
     
     // ═══ Inline Popup State ═══
     property string activePopup: ""  // "", "bluetooth", "network"
@@ -41,7 +33,6 @@ Item {
     }
     
     readonly property var config: QsConfig.Config
-    readonly property var appearance: QsConfig.AppearanceConfig
     readonly property var pywal: QsServices.Pywal
     
     // ═══════════════════════════════════════════════════════════════════════
@@ -147,14 +138,6 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         asynchronous: true
                         source: "components/Volume.qml"
-                        
-                        Binding {
-                            target: volumeLoader.item
-                            property: "barWindow"
-                            value: root.barWindow
-                            when: volumeLoader.status === Loader.Ready && root.barWindow !== undefined
-                            restoreMode: Binding.RestoreBinding
-                        }
                     }
                     
                     Rectangle {
@@ -185,38 +168,6 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         asynchronous: true
                         source: "components/Clock.qml"
-
-                        Binding {
-                            target: clockLoader.item
-                            property: "launcher"
-                            value: root.launcher
-                            when: clockLoader.status === Loader.Ready && root.launcher !== undefined
-                            restoreMode: Binding.RestoreBinding
-                        }
-
-                        Binding {
-                            target: clockLoader.item
-                            property: "controlCenter"
-                            value: root.controlCenter
-                            when: clockLoader.status === Loader.Ready && root.controlCenter !== undefined
-                            restoreMode: Binding.RestoreBinding
-                        }
-
-                        Binding {
-                            target: clockLoader.item
-                            property: "sidebar"
-                            value: root.sidebar
-                            when: clockLoader.status === Loader.Ready && root.sidebar !== undefined
-                            restoreMode: Binding.RestoreBinding
-                        }
-                        
-                        Binding {
-                            target: clockLoader.item
-                            property: "dashboard"
-                            value: root.dashboard
-                            when: clockLoader.status === Loader.Ready && root.dashboard !== undefined
-                            restoreMode: Binding.RestoreBinding
-                        }
                     }
                 }
             }
@@ -253,14 +204,6 @@ Item {
                         
                         Binding {
                             target: networkLoader.item
-                            property: "barWindow"
-                            value: root.barWindow
-                            when: networkLoader.status === Loader.Ready && root.barWindow !== undefined
-                            restoreMode: Binding.RestoreBinding
-                        }
-                        
-                        Binding {
-                            target: networkLoader.item
                             property: "bar"
                             value: root
                             when: networkLoader.status === Loader.Ready
@@ -281,14 +224,6 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         asynchronous: true
                         source: "components/Bluetooth.qml"
-                        
-                        Binding {
-                            target: bluetoothLoader.item
-                            property: "barWindow"
-                            value: root.barWindow
-                            when: bluetoothLoader.status === Loader.Ready && root.barWindow !== undefined
-                            restoreMode: Binding.RestoreBinding
-                        }
                         
                         Binding {
                             target: bluetoothLoader.item

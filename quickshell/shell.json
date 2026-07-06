@@ -1,11 +1,9 @@
 {
   "appearance": {
-    "fontFamily": "JetBrainsMono Nerd Font",
-    "materialIconFont": "Material Design Icons"
+    "fontFamily": "JetBrainsMono Nerd Font"
   },
   "paths": {
-    "pywalColors": "~/.cache/wal/colors.json",
-    "screenshotsDir": "~/Pictures/Screenshots"
+    "pywalColors": "~/.cache/wal/colors.json"
   },
   "osd": {
     "volumeTimeoutMs": 2000,
@@ -32,17 +30,5 @@
       "kitty",
       "Alacritty"
     ]
-  },
-  "sidebar": {
-    "enabled": true,
-    "width": 420,
-    "margin": 12,
-    "maxHistory": 80
-  },
-  "dashboard": {
-    "enabled": true,
-    "width": 860,
-    "height": 640,
-    "margin": 18
   }
 }

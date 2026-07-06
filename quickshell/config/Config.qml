@@ -19,13 +19,11 @@ Singleton {
     }
 
     readonly property var appearance: ({
-        fontFamily: data.appearance?.fontFamily ?? "JetBrainsMono Nerd Font",
-        materialIconFont: data.appearance?.materialIconFont ?? "Material Design Icons"
+        fontFamily: data.appearance?.fontFamily ?? "JetBrainsMono Nerd Font"
     })
 
     readonly property var paths: ({
-        pywalColors: _expandHome(data.paths?.pywalColors ?? "~/.cache/wal/colors.json"),
-        screenshotsDir: _expandHome(data.paths?.screenshotsDir ?? "~/Pictures/Screenshots")
+        pywalColors: _expandHome(data.paths?.pywalColors ?? "~/.cache/wal/colors.json")
     })
 
     readonly property var osd: ({
@@ -60,22 +58,7 @@ Singleton {
         ]
     })
 
-    readonly property var sidebar: ({
-        enabled: data.sidebar?.enabled ?? true,
-        width: data.sidebar?.width ?? 420,
-        margin: data.sidebar?.margin ?? 12,
-        maxHistory: data.sidebar?.maxHistory ?? 80
-    })
-
-    readonly property var dashboard: ({
-        enabled: data.dashboard?.enabled ?? true,
-        width: data.dashboard?.width ?? 860,
-        height: data.dashboard?.height ?? 640,
-        margin: data.dashboard?.margin ?? 18
-    })
-
     readonly property BarConfig bar: BarConfig {}
-    readonly property AppearanceConfig appearanceTokens: AppearanceConfig {}
 
     FileView {
         id: file
@@ -107,21 +90,4 @@ Singleton {
         }
     }
 
-    // Backwards-compatible aliases used across the repo
-    readonly property var controlCenter: ({
-        width: 700,
-        maxHeight: 1000,
-        padding: 16,
-        spacing: 12,
-        margin: 4,
-        cornerRadius: 24
-    })
-
-    readonly property var popups: ({
-        width: 280,
-        minHeight: 100,
-        maxHeight: 400,
-        hoverDelay: 300,
-        margin: 6
-    })
 }
