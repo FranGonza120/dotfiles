@@ -7,6 +7,13 @@ echo "🧹 Limpiando cachés..."
 sudo journalctl --vacuum-time=7d
 sudo rm -rf ~/.cache/thumbnails/*
 
+echo "🐳 Eliminando build cache de Docker..."
+if command -v docker >/dev/null 2>&1; then
+    sudo docker builder prune -f
+else
+    echo "Docker no instalado, omitiendo."
+fi
+
 echo "✅ Optimización completa."
 echo "📦 Iniciando limpieza de Flatpak..."
 

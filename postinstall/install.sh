@@ -31,6 +31,7 @@ function scripts_a_ejecutar() {
 		bleachbit
 		keyboard-layout
 		alacritty
+		quickshell
 	)
 
 	if [[ $# -ge 1 ]]; then

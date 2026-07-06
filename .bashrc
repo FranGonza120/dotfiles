@@ -5,11 +5,6 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
-# User specific environment
-if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
-    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
-fi
-
 # User specific aliases and functions
 if [ -d ~/.bashrc.d ]; then
     for rc in ~/.bashrc.d/*; do
@@ -20,9 +15,9 @@ if [ -d ~/.bashrc.d ]; then
 fi
 unset rc
 
-# Habilitar comandos fzf
-if command -v fzf >/dev/null; then
-  source /usr/share/doc/fzf/examples/key-bindings.bash 2>/dev/null || true
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
 
 # PATH
@@ -33,13 +28,18 @@ PATH="$HOME/Escritorio/3.Recursos/fluttersdk/flutter/bin:$PATH"
 PATH="$HOME/Escritorio/2.Areas/Finanzas/beancount-venv/bin:$PATH"
 export PATH
 
+# Habilitar comandos fzf
+if command -v fzf >/dev/null; then
+  source /usr/share/doc/fzf/examples/key-bindings.bash 2>/dev/null || true
+fi
+
 #Exports
-export XCURSOR_THEME=Capitaine-cursors
+export XCURSOR_THEME=capitaine-cursors
 export XCURSOR_SIZE=24
 export GTK_THEME=Flat-Remix-GTK-Grey-Darkest-Solid
 export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --prompt='❯ '"
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
-
+export PLANTUML_JAR="$HOME/Escritorio/3.Recursos/plantuml/plantuml.jar"
 # Evals
 eval "$(fzf --bash)"
 eval "$(starship init bash)"
@@ -53,10 +53,20 @@ alias nvimnotes='cd ~/Escritorio/2.Areas/SegundoCerebro && nvim $(date '+%Y-%m-%
 alias dnfupdate='sudo dnf -q list updates && sudo dnf -q update'
 alias bleachbit='sudo bleachbit'
 alias limpiardocker='docker system prune -a --volumes -f'
+alias astah="~/Escritorio/3.Recursos/astah_uml/astah -nojvchk"
 
 # Shortcuts
 bind -x '"\C-f":tm_session_creator'
 bind -x '"\C-h":tm_home_session'
+
+# PlantUML
+
+alias plantuml='java -jar "$PLANTUML_JAR"'
+
+plantuml-gui() {
+  cd "${1:-$PWD}" || return
+  java -jar "$PLANTUML_JAR" -gui
+}
 
 # Functions
 function desconectar_disco() {

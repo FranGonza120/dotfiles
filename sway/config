@@ -114,12 +114,11 @@ bindsym $mod+m move workspace to output next
 
 
 # Hotkeys básicos
-bindsym $mod+Return exec wezterm
+bindsym $mod+Return exec alacritty
 #bindsym $mod+d exec rofi -show drun -theme ~/.config/rofi/config.rasi
-bindsym $mod+d exec wofi -n
-#bindsym $mod+o exec ~/Escritorio/3.Recursos/dotfiles/Scripts/rofi/open_file.sh
-bindsym $mod+o exec ~/Escritorio/3.Recursos/dotfiles/Scripts/rofi/open_file_wofi.sh
-bindsym $mod+Shift+b exec ~/Escritorio/3.Recursos/dotfiles/Scripts/rofi/select_wallpaper.sh
+bindsym $mod+d exec ~/Escritorio/3.Recursos/dotfiles/Scripts/qs-launcher.sh apps
+bindsym $mod+o exec ~/Escritorio/3.Recursos/dotfiles/Scripts/qs-launcher.sh files
+bindsym $mod+Shift+b exec ~/Escritorio/3.Recursos/dotfiles/Scripts/qs-launcher.sh wallpapers
 bindsym $mod+q kill
 bindsym $mod+Shift+r reload
 bindsym $mod+Shift+e exit
@@ -127,7 +126,7 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+Shift+f floating toggle
 bindsym $mod+s exec grim -g "$(slurp)" - | wl-copy
 bindsym $mod+p exec ~/.config/swaylock/lock.sh
-bindsym $mod+w exec ~/Escritorio/3.Recursos/dotfiles/Scripts/waybar.sh
+bindsym $mod+w exec ~/Escritorio/3.Recursos/dotfiles/Scripts/quickshell.sh
 
 # Brillo
 bindsym XF86MonBrightnessUp exec brightnessctl set +10%
@@ -150,8 +149,8 @@ exec_always --no-startup-id swayidle -w \
     resume 'swaymsg "output * dpms on"'
 
 exec_always ~/.config/sway/monitor_hotplug.sh
+exec_always --no-startup-id ~/.config/quickshell/reload-quickshell.sh
 exec_always pgrep nm-applet || nm-applet
-exec_always mako
 exec_always pgrep blueman-applet || blueman-applet
 exec_always syncthing serve --no-browser
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
