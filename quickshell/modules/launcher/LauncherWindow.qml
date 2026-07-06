@@ -482,7 +482,7 @@ PanelWindow {
                     "-i",
                     "-a",
                     ".",
-                    "-d", "1",
+                    "-d", "2",
                     "-e", "jpg",
                     "-e", "jpeg",
                     "-e", "png",
@@ -530,6 +530,12 @@ PanelWindow {
                 }
                 const lines = text.trim().length ? text.trim().split("\n") : []
                 root.wallpaperEntries = lines
+                    .filter(path => {
+                        const relative = path.startsWith(`${root.wallpaperDir}/`)
+                            ? path.slice(root.wallpaperDir.length + 1)
+                            : ""
+                        return relative.includes("/")
+                    })
                     .map(path => ({ path, rank: root.wallpaperRank(path) }))
                     .filter(item => item.rank > 0)
                     .sort((left, right) => right.rank - left.rank || left.path.localeCompare(right.path))
