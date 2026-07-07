@@ -23,12 +23,9 @@
     "maxResults": 8,
     "terminalCommand": ["foot"],
     "favorites": [
-      "firefox",
-      "zen-browser",
+      "app.zen_browser.zen",
       "thunar",
-      "code",
-      "kitty",
-      "Alacritty"
+      "md.obsidian.Obsidian"
     ]
   }
 }

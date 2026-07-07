@@ -181,6 +181,21 @@ PanelWindow {
         return path.startsWith(`${homeDir}/`) ? `~/${path.slice(homeDir.length + 1)}` : path
     }
 
+    function entryIconSource(entry) {
+        const icon = entry?.icon
+        if (!icon)
+            return ""
+
+        const iconName = typeof icon === "string" ? icon : (icon.name ?? "")
+        if (!iconName)
+            return ""
+
+        if (iconName.startsWith("/") || iconName.startsWith("file://"))
+            return iconName
+
+        return Quickshell.iconPath(iconName, "")
+    }
+
     function commandForFile(path) {
         if (path.endsWith(".pdf"))
             return ["zathura", path]
@@ -775,6 +790,7 @@ PanelWindow {
                                 required property int index
                                 readonly property bool isSelected: root.selectedIndex === index
                                 readonly property bool isHovered: hovered.hovered && !isSelected
+                                readonly property string iconSource: root.entryIconSource(modelData)
 
                                 width: listColumn.width
                                 height: 66
@@ -813,8 +829,22 @@ PanelWindow {
                                         radius: 14
                                         color: Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, delegateRoot.modelData.type === "action" ? 0.14 : 0.10)
 
+                                        Image {
+                                            id: entryIconImage
+                                            anchors.centerIn: parent
+                                            width: 22
+                                            height: 22
+                                            visible: delegateRoot.modelData.type !== "action" && delegateRoot.iconSource.length > 0 && status !== Image.Error
+                                            source: delegateRoot.iconSource
+                                            fillMode: Image.PreserveAspectFit
+                                            smooth: true
+                                            cache: true
+                                            asynchronous: true
+                                        }
+
                                         Text {
                                             anchors.centerIn: parent
+                                            visible: !entryIconImage.visible
                                             text: delegateRoot.modelData.glyph
                                                 ? delegateRoot.modelData.glyph
                                                 : ((delegateRoot.modelData.name ?? "?").slice(0, 1).toUpperCase())
