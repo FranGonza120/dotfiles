@@ -11,6 +11,7 @@ Item {
     property real radius: 20
     property real borderWidth: 1
     property int elevation: 2
+    property bool shadowEnabled: false
     property real accentOpacity: 0.10
     property real highlightOpacity: 0.08
     property bool hovered: false
@@ -41,6 +42,7 @@ Item {
             : 0
 
     Elevation {
+        enabled: root.shadowEnabled
         level: root.highlighted ? root.elevation + 2 : root.hovered ? root.elevation + 1 : root.elevation
         target: surface
         radius: surface.radius

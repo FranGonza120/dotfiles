@@ -6,7 +6,8 @@ import "../../../components/effects"
 Item {
     id: root
     
-    property var controlCenter
+    property var controlCenterLoader
+    readonly property var controlCenter: controlCenterLoader?.item ?? null
     
     readonly property var pywal: QsServices.Pywal
     readonly property bool isActive: controlCenter?.shouldShow ?? false
@@ -25,6 +26,9 @@ Item {
         onClicked: {
             if (controlCenter) {
                 controlCenter.shouldShow = !controlCenter.shouldShow
+            } else if (controlCenterLoader && !controlCenterLoader.active) {
+                controlCenterLoader.pendingShow = true
+                controlCenterLoader.active = true
             }
         }
     }
@@ -85,13 +89,6 @@ Item {
         color: "transparent"
         border.width: 1.5
         border.color: Qt.rgba(pywal.primary.r, pywal.primary.g, pywal.primary.b, 0.3)
-        
-        // Gentle pulse when active
-        SequentialAnimation on opacity {
-            running: isActive
-            loops: Animation.Infinite
-            NumberAnimation { to: 0.5; duration: 1000; easing.type: Easing.InOutSine }
-            NumberAnimation { to: 1.0; duration: 1000; easing.type: Easing.InOutSine }
-        }
+        opacity: 0.85
     }
 }

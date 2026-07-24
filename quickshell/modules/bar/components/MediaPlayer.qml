@@ -31,13 +31,6 @@ Item {
     readonly property bool isPlaying: player?.isPlaying ?? false
     
     property bool isHovered: contentMouse.containsMouse || noMediaMouse.containsMouse
-
-    onIsPlayingChanged: {
-        if (!isPlaying) {
-            marqueeAnim.stop()
-            titleText.x = titleText.needsScroll ? 0 : (root.titleWidth - titleText.implicitWidth) / 2
-        }
-    }
     
     // No media placeholder
     RowLayout {
@@ -102,13 +95,7 @@ Item {
                 color: "transparent"
                 border.width: 1
                 border.color: Qt.rgba(Pywal.primary.r, Pywal.primary.g, Pywal.primary.b, 0.3)
-                
-                SequentialAnimation on opacity {
-                    running: root.isPlaying
-                    loops: Animation.Infinite
-                    NumberAnimation { to: 0.3; duration: 1000 }
-                    NumberAnimation { to: 1.0; duration: 1000 }
-                }
+                opacity: 0.7
             }
             
             Rectangle {
@@ -118,17 +105,7 @@ Item {
                 height: root.vinylSize
                 radius: width / 2
                 color: Pywal.surfaceContainerLow
-                
-                rotation: 0
-                
-                RotationAnimation on rotation {
-                    running: root.isPlaying
-                    from: vinyl.rotation
-                    to: vinyl.rotation + 360
-                    duration: 2500
-                    loops: Animation.Infinite
-                }
-                
+
                 // Groove rings
                 Repeater {
                     model: 2
@@ -185,42 +162,8 @@ Item {
                 font.family: "JetBrainsMono Nerd Font"
                 font.pixelSize: root.titleFontSize
                 font.weight: Font.Medium
-                
-                property bool needsScroll: implicitWidth > root.titleWidth
-                
-                x: needsScroll ? 0 : (root.titleWidth - implicitWidth) / 2
-                
-                Behavior on x {
-                    enabled: !marqueeAnim.running
-                    NumberAnimation { duration: 300; easing.type: Easing.OutCubic }
-                }
-                
-                SequentialAnimation {
-                    id: marqueeAnim
-                    running: titleText.needsScroll && root.isPlaying
-                    loops: Animation.Infinite
-                    
-                    PauseAnimation { duration: 2000 }
-                    NumberAnimation {
-                        target: titleText
-                        property: "x"
-                        to: -(titleText.implicitWidth + 20)
-                        duration: titleText.implicitWidth * 30
-                        easing.type: Easing.Linear
-                    }
-                    PropertyAction { 
-                        target: titleText
-                        property: "x"
-                        value: root.titleWidth
-                    }
-                    NumberAnimation {
-                        target: titleText
-                        property: "x"
-                        to: 0
-                        duration: 300
-                        easing.type: Easing.OutCubic
-                    }
-                }
+                width: root.titleWidth
+                elide: Text.ElideRight
             }
         }
         

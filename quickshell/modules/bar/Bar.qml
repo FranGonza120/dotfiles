@@ -8,7 +8,7 @@ Item {
     id: root
     
     property var screen
-    property var controlCenter
+    property var controlCenterWindowLoader
     
     // ═══ Inline Popup State ═══
     property string activePopup: ""  // "", "bluetooth", "network"
@@ -268,9 +268,9 @@ Item {
                         
                         Binding {
                             target: controlCenterLoader.item
-                            property: "controlCenter"
-                            value: root.controlCenter
-                            when: controlCenterLoader.status === Loader.Ready && root.controlCenter !== undefined
+                            property: "controlCenterLoader"
+                            value: root.controlCenterWindowLoader
+                            when: controlCenterLoader.status === Loader.Ready && root.controlCenterWindowLoader !== undefined
                             restoreMode: Binding.RestoreBinding
                         }
                     }

@@ -58,8 +58,6 @@ Singleton {
         const cmd = `brightnessctl set ${percent}% || echo ${sysfsValue} | sudo tee "${backlightPath}" >/dev/null; cat "${backlightPath}"`
         setBrightnessProcess.command = ["/bin/sh", "-c", cmd]
         setBrightnessProcess.running = true
-        
-        // Read brightness will be triggered by the update timer
     }
     
     function increaseBrightness() {
@@ -125,12 +123,14 @@ Singleton {
     Process {
         id: setBrightnessProcess
         running: false
+
+        onExited: readBrightness()
     }
     
     // Update timer - optimized interval
     Timer {
         id: updateTimer
-        interval: 2000  // Reduced frequency from 1000ms to 2000ms (brightness changes infrequently)
+        interval: 5000  // Idle polling only; local changes refresh immediately on process exit
         repeat: true
         triggeredOnStart: true  // Get immediate first read
         onTriggered: readBrightness()

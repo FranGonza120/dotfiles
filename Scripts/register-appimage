@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Uso:
+  register-appimage /ruta/a/App.AppImage ["Nombre visible"] [/ruta/a/icono]
+  register-appimage --self-test
+
+Notas:
+  - El icono es opcional.
+  - Crea un archivo .desktop en ~/.local/share/applications/.
+EOF
+}
+
+slugify() {
+  local value="${1,,}"
+  value="${value// /-}"
+  value="${value//[^a-z0-9._-]/}"
+  printf '%s\n' "$value"
+}
+
+write_desktop_file() {
+  local app_path="$1"
+  local app_name="$2"
+  local icon_path="$3"
+  local desktop_dir="$4"
+  local desktop_file="$5"
+
+  mkdir -p "$desktop_dir"
+
+  cat >"$desktop_file" <<EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=$app_name
+Comment=$app_name
+Exec=$app_path
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+EOF
+
+  if [[ -n "$icon_path" ]]; then
+    printf 'Icon=%s\n' "$icon_path" >>"$desktop_file"
+  fi
+}
+
+self_test() {
+  local tmpdir desktop_file
+  tmpdir="$(mktemp -d)"
+  desktop_file="$tmpdir/test-app.desktop"
+
+  write_desktop_file "/tmp/Test.AppImage" "Test App" "" "$tmpdir" "$desktop_file"
+
+  grep -Fxq 'Exec=/tmp/Test.AppImage' "$desktop_file"
+  grep -Fxq 'Name=Test App' "$desktop_file"
+  if grep -q '^Icon=' "$desktop_file"; then
+    echo "self-test failed: Icon line should be omitted when empty" >&2
+    return 1
+  fi
+
+  rm -rf "$tmpdir"
+  echo "self-test ok"
+}
+
+main() {
+  if [[ "${1:-}" == "--self-test" ]]; then
+    self_test
+    exit 0
+  fi
+
+  if [[ $# -lt 1 || $# -gt 3 ]]; then
+    usage
+    exit 1
+  fi
+
+  local app_path app_name icon_path desktop_dir desktop_file desktop_id
+  app_path="$1"
+  app_name="${2:-$(basename "$app_path" .AppImage)}"
+  icon_path="${3:-}"
+
+  if [[ ! -f "$app_path" ]]; then
+    echo "No existe: $app_path" >&2
+    exit 1
+  fi
+
+  chmod +x "$app_path"
+
+  if [[ -n "$icon_path" && ! -f "$icon_path" ]]; then
+    echo "No existe el icono: $icon_path" >&2
+    exit 1
+  fi
+
+  desktop_dir="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
+  desktop_id="$(slugify "$app_name")"
+  desktop_file="$desktop_dir/$desktop_id.desktop"
+
+  write_desktop_file "$app_path" "$app_name" "$icon_path" "$desktop_dir" "$desktop_file"
+  chmod +x "$desktop_file"
+
+  if command -v update-desktop-database >/dev/null 2>&1; then
+    update-desktop-database "$desktop_dir" >/dev/null 2>&1 || true
+  fi
+
+  #if [[ -x "$HOME/.config/quickshell/reload-quickshell.sh" ]]; then
+  #  "$HOME/.config/quickshell/reload-quickshell.sh" >/dev/null 2>&1 || true
+  #fi
+
+  echo "Creado: $desktop_file"
+}
+
+main "$@"

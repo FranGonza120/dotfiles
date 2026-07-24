@@ -49,11 +49,10 @@ alias neofetch='neofetch --source ~/.config/neofetch/edoBuilding.txt'
 alias fastfetch='fastfetch -c /home/frangonza120/.config/fastfetch/config.jsonc --logo ~/.config/fastfetch/edoBuilding.txt'
 alias screenshot='grim -g "$(slurp)" - | wl-copy'
 alias apagar='sudo shutdown now'
-alias nvimnotes='cd ~/Escritorio/2.Areas/SegundoCerebro && nvim $(date '+%Y-%m-%d_%H-%M-%S').md'
+alias nvimnotes='cd ~/Escritorio/2.Areas/Vaults/Personal && nvim $(date '+%Y-%m-%d_%H-%M-%S').md'
 alias dnfupdate='sudo dnf -q list updates && sudo dnf -q update'
 alias bleachbit='sudo bleachbit'
 alias limpiardocker='docker system prune -a --volumes -f'
-alias astah="~/Escritorio/3.Recursos/astah_uml/astah -nojvchk"
 
 # Shortcuts
 bind -x '"\C-f":tm_session_creator'
@@ -115,4 +114,7 @@ function tm_home_session() {
   fi
 }
 
-
+# Ponytail/Codex hook compatibility
+if [ -z "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -d "$HOME/.codex/.tmp/marketplaces/ponytail/hooks" ]; then
+  export CLAUDE_PLUGIN_ROOT="$HOME/.codex/.tmp/marketplaces/ponytail"
+fi

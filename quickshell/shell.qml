@@ -1,5 +1,4 @@
 //@ pragma Env QS_NO_RELOAD_POPUP=1
-//@ pragma Env QSG_RENDER_LOOP=threaded
 //@ pragma Env QT_QUICK_FLICKABLE_WHEEL_DECELERATION=10000
 
 import Quickshell
@@ -45,6 +44,7 @@ ShellRoot {
     // Notification popups in top-right corner
     Loader {
         id: notificationPopupsLoader
+        active: (root.notifs.activeNotifications?.length ?? 0) > 0
         source: "modules/bar/components/NotificationPopups.qml"
     }
     

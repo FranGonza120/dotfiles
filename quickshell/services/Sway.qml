@@ -11,6 +11,8 @@ Singleton {
     readonly property int activeWsId: I3.focusedWorkspace?.number ?? 1
     property int revision: 0
 
+    Component.onCompleted: I3.refreshWorkspaces()
+
     function getOccupiedWorkspaces(): var {
         revision
         const occupied = {}
@@ -45,19 +47,11 @@ Singleton {
         return null
     }
 
-    Timer {
-        interval: 5000
-        running: true
-        repeat: true
-        onTriggered: I3.refreshWorkspaces()
-    }
-
     Connections {
         target: I3
 
         function onRawEvent(event: var): void {
             root.revision++
-            I3.refreshWorkspaces()
         }
     }
 }

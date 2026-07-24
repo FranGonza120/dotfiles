@@ -87,14 +87,7 @@ Rectangle {
         color: "transparent"
         border.width: 2
         border.color: Qt.rgba(pywal.primary.r, pywal.primary.g, pywal.primary.b, 0.15)
-        
-        SequentialAnimation on opacity {
-            running: isActive
-            loops: Animation.Infinite
-            
-            NumberAnimation { to: 0.3; duration: 1500; easing.type: Easing.InOutSine }
-            NumberAnimation { to: 0.8; duration: 1500; easing.type: Easing.InOutSine }
-        }
+        opacity: 0.55
     }
     
     // Workspace number tooltip on hover

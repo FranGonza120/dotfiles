@@ -24,6 +24,8 @@ PanelWindow {
     property string fileSearchQuery: ""
     property string wallpaperSearchQuery: ""
     readonly property int wallpaperColumns: 3
+    readonly property int listEntryHeight: 66
+    readonly property int listEntrySpacing: 8
 
     readonly property var config: QsConfig.Config
     readonly property var pywal: QsServices.Pywal
@@ -273,6 +275,8 @@ PanelWindow {
         inputFocused = true
         resultsFocused = false
         selectedIndex = 0
+        if (resultsFlick)
+            resultsFlick.contentY = 0
     }
 
     function claimKeyboardFocus() {
@@ -342,6 +346,29 @@ PanelWindow {
             resultsFlick.contentY = Math.min(rowBottom - resultsFlick.height, Math.max(0, resultsFlick.contentHeight - resultsFlick.height))
         else if (rowTop < viewTop)
             resultsFlick.contentY = Math.max(0, rowTop)
+    }
+
+    function ensureListSelectionVisible() {
+        if (launcherMode === "wallpapers" || !resultsFlick || listEntryHeight <= 0)
+            return
+
+        const itemTop = selectedIndex * (listEntryHeight + listEntrySpacing)
+        const itemBottom = itemTop + listEntryHeight
+        const viewTop = resultsFlick.contentY
+        const viewBottom = viewTop + resultsFlick.height
+        const maxScroll = Math.max(0, resultsFlick.contentHeight - resultsFlick.height)
+
+        if (itemBottom > viewBottom)
+            resultsFlick.contentY = Math.min(itemBottom - resultsFlick.height, maxScroll)
+        else if (itemTop < viewTop)
+            resultsFlick.contentY = Math.max(0, itemTop)
+    }
+
+    function ensureSelectionVisible() {
+        if (launcherMode === "wallpapers")
+            ensureWallpaperSelectionVisible()
+        else
+            ensureListSelectionVisible()
     }
 
     function handleMoveDown() {
@@ -456,6 +483,8 @@ PanelWindow {
         if (selectedIndex >= visibleEntries.length)
             selectedIndex = Math.max(0, visibleEntries.length - 1)
     }
+
+    onSelectedIndexChanged: ensureSelectionVisible()
 
     onQueryChanged: searchDebounce.restart()
 
@@ -644,6 +673,7 @@ PanelWindow {
             strokeColor: root.cBorder
             accentColor: root.cPrimary
             elevation: 4
+            shadowEnabled: true
             highlighted: root.shouldShow
 
             ColumnLayout {
@@ -778,7 +808,7 @@ PanelWindow {
                     Column {
                         id: listColumn
                         width: root.width - 48
-                        spacing: 8
+                        spacing: root.listEntrySpacing
                         visible: root.launcherMode !== "wallpapers"
 
                         Repeater {
@@ -793,7 +823,7 @@ PanelWindow {
                                 readonly property string iconSource: root.entryIconSource(modelData)
 
                                 width: listColumn.width
-                                height: 66
+                                height: root.listEntryHeight
                                 radius: 20
                                 color: isSelected
                                     ? Qt.rgba(root.cPrimary.r, root.cPrimary.g, root.cPrimary.b, 0.18)

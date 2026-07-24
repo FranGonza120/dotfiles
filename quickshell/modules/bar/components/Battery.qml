@@ -136,7 +136,7 @@ Item {
                         // Charging shimmer
                         Rectangle {
                             id: chargeShimmer
-                            visible: isCharging && !isFullyCharged && !showExpandedMode
+                            visible: false
                             anchors.fill: parent
                             radius: parent.radius
                             color: Qt.rgba(1, 1, 1, 0.12)
@@ -145,19 +145,6 @@ Item {
                             property real shimmerPos: 0
                             x: (parent.width + width) * shimmerPos - width
                             
-                            SequentialAnimation on shimmerPos {
-                                running: isCharging && !isFullyCharged && !showExpandedMode
-                                loops: Animation.Infinite
-                                NumberAnimation { from: -0.3; to: 1.3; duration: 1200; easing.type: Easing.InOutSine }
-                                PauseAnimation { duration: 400 }
-                            }
-
-                            SequentialAnimation on opacity {
-                                running: isCharging && !isFullyCharged && !showExpandedMode
-                                loops: Animation.Infinite
-                                NumberAnimation { from: 0.04; to: 0.16; duration: 600; easing.type: Easing.InOutSine }
-                                NumberAnimation { from: 0.16; to: 0.04; duration: 600; easing.type: Easing.InOutSine }
-                            }
                         }
                     }
                 }
@@ -186,13 +173,6 @@ Item {
                     font.pixelSize: 12
                     color: batteryLevel > 50 ? pywal.background : pywal.foreground
                     opacity: 0.9
-                    
-                    SequentialAnimation on scale {
-                        running: isCharging && !isFullyCharged && !showExpandedMode
-                        loops: Animation.Infinite
-                        NumberAnimation { to: 1.2; duration: 400; easing.type: Easing.OutCubic }
-                        NumberAnimation { to: 1.0; duration: 400; easing.type: Easing.InCubic }
-                    }
                 }
             }
             
@@ -207,14 +187,6 @@ Item {
                 
                 Behavior on color {
                     ColorAnimation { duration: 300 }
-                }
-                
-                // Critical pulse
-                SequentialAnimation on opacity {
-                    running: isCritical
-                    loops: Animation.Infinite
-                    NumberAnimation { to: 1.0; duration: 500 }
-                    NumberAnimation { to: 0.3; duration: 500 }
                 }
             }
         }
@@ -266,27 +238,7 @@ Item {
                 // Shimmer
                 Rectangle {
                     id: liquidShimmer
-                    anchors.fill: parent
-                    radius: parent.radius
-                    color: Qt.rgba(1, 1, 1, 0.10)
-                    opacity: 0
-                    
-                    property real shimmerX: 0
-                    x: (parent.width + width) * shimmerX - width
-                    
-                    SequentialAnimation on shimmerX {
-                        running: showExpandedMode
-                        loops: Animation.Infinite
-                        NumberAnimation { from: -0.2; to: 1.2; duration: 1000 }
-                        PauseAnimation { duration: 500 }
-                    }
-
-                    SequentialAnimation on opacity {
-                        running: showExpandedMode
-                        loops: Animation.Infinite
-                        NumberAnimation { from: 0.03; to: 0.14; duration: 500; easing.type: Easing.InOutSine }
-                        NumberAnimation { from: 0.14; to: 0.03; duration: 500; easing.type: Easing.InOutSine }
-                    }
+                    visible: false
                 }
             }
             

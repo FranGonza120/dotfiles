@@ -17,16 +17,16 @@ Singleton {
     property real sourceVolume: 0
     readonly property int sourcePercentage: Math.round(sourceVolume * 100)
 
-    Timer {
-        interval: 1000
-        running: true
-        repeat: true
-        onTriggered: {
-            if (!getSink.running)
-                getSink.running = true
-            if (!getSource.running)
-                getSource.running = true
-        }
+    Component.onCompleted: refresh()
+
+    function refresh() {
+        if (!getSink.running)
+            getSink.running = true
+    }
+
+    function refreshSource() {
+        if (!getSource.running)
+            getSource.running = true
     }
 
     Process {
@@ -70,6 +70,13 @@ Singleton {
         }
     }
 
+    Timer {
+        interval: 3000
+        running: true
+        repeat: true
+        onTriggered: root.refresh()
+    }
+
     function setVolume(newVolume) {
         setMute(false)
         setVolProc.command = ["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", Math.max(0, Math.min(1.5, newVolume)).toFixed(3)]
@@ -98,16 +105,19 @@ Singleton {
         setSourceMute(false)
         setSourceVolProc.command = ["wpctl", "set-volume", "@DEFAULT_AUDIO_SOURCE@", Math.max(0, Math.min(1.5, newVolume)).toFixed(3)]
         setSourceVolProc.running = true
+        refreshSource()
     }
 
     function setSourceMute(m) {
         setSourceMuteProc.command = ["wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", m ? "1" : "0"]
         setSourceMuteProc.running = true
+        refreshSource()
     }
 
     function toggleSourceMute() {
         setSourceMuteProc.command = ["wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle"]
         setSourceMuteProc.running = true
+        refreshSource()
     }
 
     Process { id: setVolProc }

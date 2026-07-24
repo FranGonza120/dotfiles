@@ -19,8 +19,15 @@ PanelWindow {
     readonly property var brightness: QsServices.Brightness
     readonly property var notifs: QsServices.Notifs
     readonly property var systemUsage: QsServices.SystemUsage
+    readonly property var players: QsServices.Players
 
     property bool shouldShow: false
+
+    function syncServiceActivity() {
+        systemUsage.active = shouldShow
+        network.pollingActive = shouldShow
+        players.visible = shouldShow
+    }
 
     screen: Quickshell.screens[0]
     anchors { top: true; right: true }
@@ -32,6 +39,9 @@ PanelWindow {
     visible: shouldShow || panelContent.opacity > 0
 
     WlrLayershell.keyboardFocus: shouldShow ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
+
+    Component.onCompleted: syncServiceActivity()
+    onShouldShowChanged: syncServiceActivity()
 
     Process {
         id: lockProcess
