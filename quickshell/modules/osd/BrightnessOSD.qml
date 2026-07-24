@@ -17,6 +17,7 @@ PanelWindow {
     // Brightness reading
     property int currentBrightness: 50
     property int prevBrightness: -1
+    property bool brightnessSynced: false
     readonly property int iconSlotWidth: 36
     readonly property int sideSlotWidth: 42
 
@@ -47,22 +48,38 @@ PanelWindow {
         interval: config.osd.brightnessTimeoutMs
         onTriggered: root.showing = false
     }
+
+    Timer {
+        interval: root.showing ? 120 : 250
+        running: true
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: brightnessService.readBrightness()
+    }
     
     // Fast polling for responsive OSD (100ms when showing, 300ms otherwise)
     // Use Brightness service (portable backlight detection)
     readonly property int pct: brightnessService.percentage
 
     onPctChanged: {
-        if (pct !== root.currentBrightness)
+        if (!root.brightnessSynced) {
             root.currentBrightness = pct
-    }
-    
-    // Detect changes and show OSD
-    onCurrentBrightnessChanged: {
-        if (prevBrightness !== -1 && currentBrightness !== prevBrightness) {
+            root.prevBrightness = pct
+            root.brightnessSynced = true
+            return
+        }
+
+        if (pct !== root.currentBrightness) {
+            root.currentBrightness = pct
+            root.prevBrightness = pct
             show()
         }
-        prevBrightness = currentBrightness
+    }
+
+    Component.onCompleted: {
+        root.currentBrightness = brightnessService.percentage
+        root.prevBrightness = root.currentBrightness
+        root.brightnessSynced = false
     }
     
     function show() {

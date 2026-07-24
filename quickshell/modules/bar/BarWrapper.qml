@@ -31,7 +31,7 @@ Scope {
 
     function closeLaunchers() {
         launcherUnloadTimer.stop()
-        const launchers = [appLauncherLoader, fileLauncherLoader, wallpaperLauncherLoader]
+        const launchers = [searchLauncherLoader, wallpaperLauncherLoader]
         for (let i = 0; i < launchers.length; i++) {
             const loader = launchers[i]
             loader.pendingMode = ""
@@ -44,11 +44,14 @@ Scope {
 
     function openLauncher(mode) {
         closeLaunchers()
-        openLauncherLoader(mode === "files"
-            ? fileLauncherLoader
-            : mode === "wallpapers"
-                ? wallpaperLauncherLoader
-                : appLauncherLoader, mode)
+        openLauncherLoader(mode === "wallpapers" ? wallpaperLauncherLoader : searchLauncherLoader, mode)
+    }
+
+    IpcHandler {
+        target: "launcher"
+
+        function openApps(): void { openLauncher("apps") }
+        function openFiles(): void { openLauncher("files") }
     }
     
     // Popup windows removed — popups are now hosted inline inside the bar PanelWindow
@@ -108,7 +111,7 @@ Scope {
     }
 
     Loader {
-        id: appLauncherLoader
+        id: searchLauncherLoader
         active: false
         source: "../launcher/LauncherWindow.qml"
         asynchronous: true
@@ -117,22 +120,6 @@ Scope {
         onStatusChanged: {
             if (status === Loader.Ready && item) {
                 item.launcherMode = pendingMode || "apps"
-                if (pendingMode)
-                    item.openLauncher()
-            }
-        }
-    }
-
-    Loader {
-        id: fileLauncherLoader
-        active: false
-        source: "../launcher/LauncherWindow.qml"
-        asynchronous: true
-        property string pendingMode: ""
-
-        onStatusChanged: {
-            if (status === Loader.Ready && item) {
-                item.launcherMode = pendingMode || "files"
                 if (pendingMode)
                     item.openLauncher()
             }
@@ -196,7 +183,7 @@ Scope {
                 return
             }
             const mode = text().trim()
-            if (mode === "apps" || mode === "files" || mode === "wallpapers")
+            if (mode === "wallpapers")
                 openLauncher(mode)
         }
 

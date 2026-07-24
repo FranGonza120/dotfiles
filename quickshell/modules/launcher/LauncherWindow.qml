@@ -51,40 +51,7 @@ PanelWindow {
         `${homeDir}/Escritorio/3.Recursos/`,
         `${homeDir}/Escritorio/4.Archivar/`
     ]
-    readonly property string trimmedQuery: query.trim()
-    readonly property bool actionMode: launcherMode === "apps" && query.startsWith(">")
-    readonly property string searchTerm: {
-        if (actionMode)
-            return query.slice(1).trim()
-        return trimmedQuery
-    }
-
-    readonly property var actionEntries: [
-        {
-            id: "action-terminal",
-            name: "Open Terminal",
-            comment: "Launch your configured terminal",
-            glyph: "󰆍",
-            type: "action",
-            onTriggered: () => Quickshell.execDetached(terminalCommand)
-        },
-        {
-            id: "action-files",
-            name: "Open Files",
-            comment: "Open your home directory",
-            glyph: "󰉋",
-            type: "action",
-            onTriggered: () => Quickshell.execDetached(["xdg-open", Quickshell.env("HOME")])
-        },
-        {
-            id: "action-network",
-            name: "Network Settings",
-            comment: "Open nm-connection-editor",
-            glyph: "󰖩",
-            type: "action",
-            onTriggered: () => Quickshell.execDetached(["nm-connection-editor"])
-        }
-    ]
+    readonly property string searchTerm: query.trim()
 
     readonly property var favoriteApps: {
         const favorites = config.launcher.favorites ?? []
@@ -147,14 +114,6 @@ PanelWindow {
 
     readonly property var visibleEntries: {
         const q = searchTerm
-        if (actionMode) {
-            const actionQuery = q.toLowerCase()
-            return actionEntries.filter(entry => {
-                if (!actionQuery.length)
-                    return true
-                return entry.name.toLowerCase().includes(actionQuery) || entry.comment.toLowerCase().includes(actionQuery)
-            })
-        }
 
         if (launcherMode === "files")
             return fileEntries.slice(0, config.launcher.maxResults)
@@ -494,7 +453,7 @@ PanelWindow {
         repeat: false
         onTriggered: {
             const q = root.searchTerm
-            if (root.actionMode || (!q.length && root.launcherMode !== "wallpapers")) {
+            if (!q.length && root.launcherMode !== "wallpapers") {
                 root.fileEntries = []
                 root.wallpaperEntries = []
                 return
@@ -702,7 +661,7 @@ PanelWindow {
                         spacing: 12
 
                         Text {
-                            text: query.trim().startsWith(">") ? "󰘳" : "󰍉"
+                            text: root.launcherMode === "files" ? "󰉋" : root.launcherMode === "wallpapers" ? "󰸉" : "󰍉"
                             font.family: "Material Design Icons"
                             font.pixelSize: 22
                             color: root.cPrimary
@@ -718,7 +677,7 @@ PanelWindow {
                                 ? "Search files or path"
                                 : root.launcherMode === "wallpapers"
                                     ? "Search wallpapers"
-                                    : 'Search apps or type ">" for actions'
+                                    : "Search apps"
                             placeholderTextColor: root.cSubText
                             background: Item {}
                             selectByMouse: true
@@ -769,8 +728,7 @@ PanelWindow {
                     spacing: 10
 
                     Text {
-                        text: root.actionMode ? "Quick actions"
-                            : root.launcherMode === "files" ? "Files"
+                        text: root.launcherMode === "files" ? "Files"
                             : root.launcherMode === "wallpapers" ? "Wallpapers"
                             : (root.searchTerm.length ? "Apps" : "Favorites")
                         font.family: QsConfig.Config.appearance.fontFamily
@@ -1018,8 +976,7 @@ PanelWindow {
                 Text {
                     Layout.fillWidth: true
                     visible: root.visibleEntries.length === 0
-                    text: root.actionMode ? "No actions matched."
-                        : root.launcherMode === "files" ? "No files matched."
+                    text: root.launcherMode === "files" ? "No files matched."
                         : root.launcherMode === "wallpapers" ? "No wallpapers matched."
                         : "No applications matched your search."
                     horizontalAlignment: Text.AlignHCenter

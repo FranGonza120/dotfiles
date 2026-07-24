@@ -48,6 +48,14 @@ PanelWindow {
         onTriggered: root.showing = false
     }
 
+    Timer {
+        interval: root.showing ? 120 : 250
+        running: true
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: audio.refresh()
+    }
+
     Connections {
         target: audio
 
