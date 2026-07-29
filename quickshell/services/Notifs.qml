@@ -226,8 +226,7 @@ Singleton {
             }
             
             function onImageChanged() {
-                notifWrapper.image = notifWrapper.notification.image;
-                notifWrapper.sanitizeConnectivityMedia();
+                notifWrapper.image = "";
             }
             
             function onUrgencyChanged() {
@@ -293,7 +292,7 @@ Singleton {
             body = notification.body
             appName = notification.appName
             appIcon = notification.appIcon
-            image = notification.image
+            image = ""
             urgency = notification.urgency
             actions = root._actionsToArray(notification.actions)
             read = timestamp.getTime() <= root.lastReadAt

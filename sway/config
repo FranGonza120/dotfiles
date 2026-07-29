@@ -82,13 +82,22 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Cambiar de workspace con Mod+Número
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
+bindsym $mod+1 [workspace="^1( .*)?$"] move workspace to output current; workspace $ws1
+bindsym $mod+2 [workspace="^2( .*)?$"] move workspace to output current; workspace $ws2
+bindsym $mod+3 [workspace="^3( .*)?$"] move workspace to output current; workspace $ws3
+bindsym $mod+4 [workspace="^4( .*)?$"] move workspace to output current; workspace $ws4
+bindsym $mod+5 [workspace="^5( .*)?$"] move workspace to output current; workspace $ws5
+bindsym $mod+6 [workspace="^6( .*)?$"] move workspace to output current; workspace $ws6
+bindsym $mod+7 [workspace="^7( .*)?$"] move workspace to output current; workspace $ws7
+bindsym $mod+8 [workspace="^8$"] move workspace to output current; workspace number 8
+bindsym $mod+9 [workspace="^9$"] move workspace to output current; workspace number 9
+#bindsym $mod+1 workspace $ws1
+#bindsym $mod+2 workspace $ws2
+#bindsym $mod+3 workspace $ws3
+#bindsym $mod+4 workspace $ws4
+#bindsym $mod+5 workspace $ws5
+#bindsym $mod+6 workspace $ws6
+#bindsym $mod+7 workspace $ws7
 
 # Mover ventanas entre workspaces
 bindsym $mod+Shift+1 move container to workspace $ws1
@@ -109,7 +118,6 @@ bindsym $mod+Right focus output right
 # Mover el cursor al monitor izquierdo o derecho
 bindsym $mod+Ctrl+Left  exec swaymsg seat seat0 cursor move -1920 0
 bindsym $mod+Ctrl+Right exec swaymsg seat seat0 cursor move 1920 0
-bindsym $mod+m move workspace to output next
 
 
 

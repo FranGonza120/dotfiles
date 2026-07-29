@@ -23,7 +23,6 @@ Item {
     property color onSurfaceVariantColor: pywal?.onSurfaceMuted ?? "#999999"
     property color errorColor: pywal?.error ?? "#ff4444"
     property color surfaceContainerHighColor: pywal?.surfaceContainerHigh ?? "#1a1a1a"
-
     property var pywal: null
 
     function urgencyColor(urgency) {
@@ -217,24 +216,6 @@ Item {
             elide: Text.ElideRight
             lineHeight: 1.4
             visible: showBody && text.length > 0
-        }
-
-        // --- Image preview ---
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 80
-            radius: 10
-            clip: true
-            visible: notification?.image && notification.image.length > 0
-            color: surfaceContainerHighColor
-
-            Image {
-                anchors.fill: parent
-                anchors.margins: 1
-                source: root.iconSource(notification?.image ?? "")
-                fillMode: Image.PreserveAspectCrop
-                smooth: true; cache: true; asynchronous: true
-            }
         }
 
         // --- Action buttons ---
