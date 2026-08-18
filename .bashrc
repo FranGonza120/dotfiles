@@ -53,6 +53,7 @@ alias nvimnotes='cd ~/Escritorio/2.Areas/Vaults/Personal && nvim $(date '+%Y-%m-
 alias dnfupdate='sudo dnf -q list updates && sudo dnf -q update'
 alias bleachbit='sudo bleachbit'
 alias limpiardocker='docker system prune -a --volumes -f'
+alias ytmusic='ytfzf -c yt -m'
 
 # Shortcuts
 bind -x '"\C-f":tm_session_creator'

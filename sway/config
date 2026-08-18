@@ -38,14 +38,25 @@ set $ws7 "7 "
 
 # Asignar aplicaciones a workspaces
 assign [app_id="Alacritty"] $ws1
+for_window [app_id="Alacritty"] focus
 assign [app_id="thunar"] $ws1
+for_window [app_id="thunar"] focus
 assign [class="obsidian"] $ws2
+for_window [class="obsidian"] focus
+assign [app_id="ZenNotes"] $ws2
+for_window [app_id="ZenNotes"] focus
 assign [app_id="okular"] $ws4
+for_window [app_id="okular"] focus
 assign [app_id="org.pwmt.zathura"] $ws4
+for_window [app_id="org.pwmt.zathura"] focus
 assign [app_id="org.mozilla.firefox"] $ws3
+for_window [app_id="org.mozilla.firefox"] focus
 assign [app_id="zen"] $ws3
+for_window [app_id="zen"] focus
 assign [class="Spotify"] $ws5
+for_window [class="Spotify"] focus
 assign [app_id="com.github.neithern.g4music"] $ws5
+for_window [app_id="com.github.neithern.g4music"] focus
 
 # Configuración de Ventana
 for_window [app_id="org.mozilla.firefox"] fullscreen enable, focus
